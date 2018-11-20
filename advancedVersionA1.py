@@ -1,7 +1,6 @@
 counter = 1
 grades = []
 sum
-
 #functions
 
 def checkInput (input):
