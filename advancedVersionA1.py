@@ -7,12 +7,12 @@ def checkInput (input):
     if not(input.isdigit()):
         if input == "":
             return input
-        print("No integer! Enter again:")
+        print("Kein integer! Nochmal eingeben:")
         input = checkInput(raw_input())
         return input
     else:
         if input > "6" or input < "1":
-            print("No valid grade! Enter again:")
+            print("Keine valide Note! Nochmal eingeben:")
             input = checkInput(raw_input())
             return input
         else:
