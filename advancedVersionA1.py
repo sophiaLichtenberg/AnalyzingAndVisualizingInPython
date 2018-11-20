@@ -75,3 +75,7 @@ input = checkInput(raw_input())
 grades.append(input)
 sum = float(input)
 start(input)
+
+
+
+
