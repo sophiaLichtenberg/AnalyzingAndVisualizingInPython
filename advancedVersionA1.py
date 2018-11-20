@@ -51,6 +51,8 @@ def checkIfReadyToCalc():
             grades.append(input)
             sum = sum + float(input)
             start(input)
+    else:
+        checkIfReadyToCalc()
 
 def start(input):
     global sum
