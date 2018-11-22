@@ -1,10 +1,12 @@
 counter = 1
 grades = []
 sum
-#functions
 
-def checkInput (input):
-    if not(input.isdigit()):
+
+# functions
+
+def checkInput(input):
+    if not (input.isdigit()):
         if input == "":
             return input
         print("Kein integer! Nochmal eingeben:")
@@ -18,10 +20,12 @@ def checkInput (input):
         else:
             return input
 
+
 def calcArithmeticMean(grades):
     global sum
     arithmeticMean = sum / len(grades)
     return arithmeticMean
+
 
 def calcMedian(grades):
     grades = sorted(grades)
@@ -31,6 +35,7 @@ def calcMedian(grades):
     else:
         median = float(grades[middle])
     return median
+
 
 def checkIfReadyToCalc():
     global sum
@@ -54,6 +59,7 @@ def checkIfReadyToCalc():
     else:
         checkIfReadyToCalc()
 
+
 def start(input):
     global sum
     global counter
@@ -68,7 +74,8 @@ def start(input):
         else:
             checkIfReadyToCalc()
 
-#Start of program
+
+# Start of program
 
 print "Gib Deine Noten gefolgt von Return ein. Lass die Eingabe leer, um zu beenden."
 print str(counter) + ". Note: "
@@ -76,7 +83,3 @@ input = checkInput(raw_input())
 grades.append(input)
 sum = float(input)
 start(input)
-
-
-
-
