@@ -88,12 +88,37 @@ def multicolor_ants(ant_array):
 
 def special_ants(ant_array):
     if checkIfEmpty(ant_array):
-        ant_array[20][21] = RED
-        ant_array[21][20] = RED
-        ant_array[21][21] = RED
-        ant_array[21][22] = RED
-        ant_array[22][20] = RED
-        ant_array[22][22] = RED
-        ant_array[23][21] = RED
+        # Schwimmer 1
+        ant_array[20][0] = RED
+        ant_array[20][1] = RED
+        ant_array[20][2] = RED
+        ant_array[21][2] = RED
+        ant_array[21][3] = RED
+        ant_array[22][0] = RED
+        ant_array[22][1] = RED
+        ant_array[22][2] = RED
 
+        # Schwimmer 2
+        ant_array[19][7] = RED
+        ant_array[20][6] = RED
+        ant_array[20][7] = RED
+        ant_array[20][8] = RED
+        ant_array[20][9] = RED
+        ant_array[21][8] = RED
+        ant_array[21][9] = RED
+        ant_array[22][6] = RED
+        ant_array[22][7] = RED
+        ant_array[22][8] = RED
+        ant_array[22][9] = RED
+        ant_array[23][7] = RED
+
+
+
+    for i in checkNeighbours(ant_array):
+        if ant_array[i[0]][i[1]] == WHITE:
+            if i[2] == 3:
+                ant_array[i[0]][i[1]] = RED
+        else:
+            if i[2] != 3 and i[2] != 5:
+                ant_array[i[0]][i[1]] = WHITE
     return ant_array
