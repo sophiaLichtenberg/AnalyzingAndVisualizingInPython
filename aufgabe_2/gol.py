@@ -80,12 +80,14 @@ class NimGui(object):
 
     def update_image(self):
         ants_as_list = np.array(self.life_image).tolist()
+        if self.rules.get() == 0:
+            mutated_ants = golalgo.simple_gol(ants_as_list)
         if self.rules.get() == 1:
             mutated_ants = golalgo.multicolor_ants(ants_as_list)
         if self.rules.get() == 2:
             mutated_ants = golalgo.special_ants(ants_as_list)
-        else:
-            mutated_ants = golalgo.simple_gol(ants_as_list)
+        if self.rules.get() == 3:
+            mutated_ants = golalgo.christmas_tree(ants_as_list)
         numpy_image = np.array(mutated_ants).astype('uint8')
         self.life_image = Image.fromarray(numpy_image)
         self.draw = ImageDraw.Draw(self.life_image)
@@ -110,6 +112,7 @@ class NimGui(object):
         menu_options.add_radiobutton(label="Klassische Regeln (Aufgabenteil a)", value=0, variable=self.rules)
         menu_options.add_radiobutton(label="Bunte Ameisen (Aufgabenteil b)", value=1, variable=self.rules)
         menu_options.add_radiobutton(label="Spezial (Extra)", value=2, variable=self.rules)
+        menu_options.add_radiobutton(label="Christmas Tree (Extra)", value=3, variable=self.rules)
         menu_neu.add_command(label="100x50", underline=0, command=lambda: self.set_image_size((100, 50)))
         menu_neu.add_command(label="150x100", underline=1, command=lambda: self.set_image_size((150, 100)))
         menu_neu.add_command(label="200x150", underline=1, command=lambda: self.set_image_size((200, 150)))
