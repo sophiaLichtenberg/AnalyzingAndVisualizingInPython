@@ -3,35 +3,57 @@ WHITE = [255, 255, 255]
 RED = [255, 0, 0]
 GREEN = [0, 255, 0]
 BLUE = [0, 0, 255]
+YELLOW = [255, 255, 0]
 DARK_GREEN = [0, 100, 0]
 BROWN = [160, 82, 45]
+
 
 def checkNeighbours(ant_array):
     neighbourCounter = 0
     antNeighbours = []
+    neighbour_row = 0
+    neighbour_col = 0
     for row in range(len(ant_array)):
         for col in range(len(ant_array[row])):
             if row + 1 < len(ant_array) and col + 1 < len(ant_array[row]):
                 if ant_array[row + 1][col] != WHITE:
                     neighbourCounter += 1
+                    neighbour_row = row + 1
+                    neighbour_col = col
                 if ant_array[row + 1][col + 1] != WHITE:
                     neighbourCounter += 1
+                    neighbour_row = row + 1
+                    neighbour_col = col + 1
                 if ant_array[row][col + 1] != WHITE:
                     neighbourCounter += 1
+                    neighbour_row = row
+                    neighbour_col = col + 1
                 if row - 1 >= 0 or col - 1 >= 0:
                     if ant_array[row + 1][col - 1] != WHITE:
                         neighbourCounter += 1
+                        neighbour_row = row + 1
+                        neighbour_col = col - 1
                     if ant_array[row - 1][col + 1] != WHITE:
                         neighbourCounter += 1
+                        neighbour_row = row - 1
+                        neighbour_col = col + 1
             if row - 1 >= 0 or col - 1 >= 0:
                 if ant_array[row - 1][col - 1] != WHITE:
                     neighbourCounter += 1
+                    neighbour_row = row - 1
+                    neighbour_col = col - 1
                 if ant_array[row - 1][col] != WHITE:
                     neighbourCounter += 1
+                    neighbour_row = row - 1
+                    neighbour_col = col
                 if ant_array[row][col - 1] != WHITE:
                     neighbourCounter += 1
+                    neighbour_row = row
+                    neighbour_col = col - 1
             if neighbourCounter > 0:
-                antNeighbours.append([row, col, neighbourCounter])
+                antNeighbours.append([row, col, neighbourCounter, neighbour_row, neighbour_col])
+            neighbour_row = 0
+            neighbour_col = 0
             neighbourCounter = 0
     return antNeighbours
 
@@ -113,91 +135,103 @@ def special_ants(ant_array):
         ant_array[12][9] = RED
         ant_array[13][7] = RED
 
-        # Schwimmer 1
-        ant_array[20][0] = RED
-        ant_array[20][1] = RED
-        ant_array[20][2] = RED
-        ant_array[21][2] = RED
-        ant_array[21][3] = RED
-        ant_array[22][0] = RED
-        ant_array[22][1] = RED
-        ant_array[22][2] = RED
+        # Schwimmer 3
+        ant_array[20][0] = YELLOW
+        ant_array[20][1] = YELLOW
+        ant_array[20][2] = YELLOW
+        ant_array[21][2] = YELLOW
+        ant_array[21][3] = YELLOW
+        ant_array[22][0] = YELLOW
+        ant_array[22][1] = YELLOW
+        ant_array[22][2] = YELLOW
 
-        # Schwimmer 2
-        ant_array[19][7] = RED
-        ant_array[20][6] = RED
-        ant_array[20][7] = RED
-        ant_array[20][8] = RED
-        ant_array[20][9] = RED
-        ant_array[21][8] = RED
-        ant_array[21][9] = RED
-        ant_array[22][6] = RED
-        ant_array[22][7] = RED
-        ant_array[22][8] = RED
-        ant_array[22][9] = RED
-        ant_array[23][7] = RED
+        # Schwimmer 4
+        ant_array[19][7] = YELLOW
+        ant_array[20][6] = YELLOW
+        ant_array[20][7] = YELLOW
+        ant_array[20][8] = YELLOW
+        ant_array[20][9] = YELLOW
+        ant_array[21][8] = YELLOW
+        ant_array[21][9] = YELLOW
+        ant_array[22][6] = YELLOW
+        ant_array[22][7] = YELLOW
+        ant_array[22][8] = YELLOW
+        ant_array[22][9] = YELLOW
+        ant_array[23][7] = YELLOW
 
-        # Schwimmer 1
-        ant_array[30][0] = RED
-        ant_array[30][1] = RED
-        ant_array[30][2] = RED
-        ant_array[31][2] = RED
-        ant_array[31][3] = RED
-        ant_array[32][0] = RED
-        ant_array[32][1] = RED
-        ant_array[32][2] = RED
+        # Schwimmer 5
+        ant_array[30][0] = BLUE
+        ant_array[30][1] = BLUE
+        ant_array[30][2] = BLUE
+        ant_array[31][2] = BLUE
+        ant_array[31][3] = BLUE
+        ant_array[32][0] = BLUE
+        ant_array[32][1] = BLUE
+        ant_array[32][2] = BLUE
 
-        # Schwimmer 2
-        ant_array[29][7] = RED
-        ant_array[30][6] = RED
-        ant_array[30][7] = RED
-        ant_array[30][8] = RED
-        ant_array[30][9] = RED
-        ant_array[31][8] = RED
-        ant_array[31][9] = RED
-        ant_array[32][6] = RED
-        ant_array[32][7] = RED
-        ant_array[32][8] = RED
-        ant_array[32][9] = RED
-        ant_array[33][7] = RED
+        # Schwimmer 6
+        ant_array[29][7] = BLUE
+        ant_array[30][6] = BLUE
+        ant_array[30][7] = BLUE
+        ant_array[30][8] = BLUE
+        ant_array[30][9] = BLUE
+        ant_array[31][8] = BLUE
+        ant_array[31][9] = BLUE
+        ant_array[32][6] = BLUE
+        ant_array[32][7] = BLUE
+        ant_array[32][8] = BLUE
+        ant_array[32][9] = BLUE
+        ant_array[33][7] = BLUE
 
-        # Schwimmer 1
-        ant_array[40][0] = RED
-        ant_array[40][1] = RED
-        ant_array[40][2] = RED
-        ant_array[41][2] = RED
-        ant_array[41][3] = RED
-        ant_array[42][0] = RED
-        ant_array[42][1] = RED
-        ant_array[42][2] = RED
+        # Schwimmer 7
+        ant_array[40][0] = GREEN
+        ant_array[40][1] = GREEN
+        ant_array[40][2] = GREEN
+        ant_array[41][2] = GREEN
+        ant_array[41][3] = GREEN
+        ant_array[42][0] = GREEN
+        ant_array[42][1] = GREEN
+        ant_array[42][2] = GREEN
 
-        # Schwimmer 2
-        ant_array[39][7] = RED
-        ant_array[40][6] = RED
-        ant_array[40][7] = RED
-        ant_array[40][8] = RED
-        ant_array[40][9] = RED
-        ant_array[41][8] = RED
-        ant_array[41][9] = RED
-        ant_array[42][6] = RED
-        ant_array[42][7] = RED
-        ant_array[42][8] = RED
-        ant_array[42][9] = RED
-        ant_array[43][7] = RED
+        # Schwimmer 8
+        ant_array[39][7] = GREEN
+        ant_array[40][6] = GREEN
+        ant_array[40][7] = GREEN
+        ant_array[40][8] = GREEN
+        ant_array[40][9] = GREEN
+        ant_array[41][8] = GREEN
+        ant_array[41][9] = GREEN
+        ant_array[42][6] = GREEN
+        ant_array[42][7] = GREEN
+        ant_array[42][8] = GREEN
+        ant_array[42][9] = GREEN
+        ant_array[43][7] = GREEN
 
     for i in checkNeighbours(ant_array):
         if ant_array[i[0]][i[1]] == WHITE:
             if i[2] == 3:
-                ant_array[i[0]][i[1]] = RED
+                if ant_array[i[3]][i[4]] == RED:
+                    ant_array[i[0]][i[1]] = RED
+                elif ant_array[i[3]][i[4]] == BLUE:
+                    ant_array[i[0]][i[1]] = BLUE
+                elif ant_array[i[3]][i[4]] == GREEN:
+                    ant_array[i[0]][i[1]] = GREEN
+                elif ant_array[i[3]][i[4]] == YELLOW:
+                    ant_array[i[0]][i[1]] = YELLOW
+                else:
+                    #print ant_array[12][6]
+                    print str(i[0]) + " " + str(i[1]) + " " + str(ant_array[i[0]][i[1]]) + " " + str(i[2]) + " " + str(i[3]) + " " + str(i[4]) + " " + str(ant_array[i[3]][i[4]])
+                    ant_array[i[0]][i[1]] = BLACK
         else:
             if i[2] != 3 and i[2] != 5:
+                print str(ant_array[13][6]) + " - " + str(ant_array[12][6])
                 ant_array[i[0]][i[1]] = WHITE
     return ant_array
 
 
 def christmas_tree(ant_array):
     if checkIfEmpty(ant_array):
-        middle = len(ant_array[0])/2
+        middle = len(ant_array[0]) / 2
         i = 0
         while i < len(ant_array) - len(ant_array) / 3:
             ant_array[i][middle - i] = DARK_GREEN
@@ -209,9 +243,23 @@ def christmas_tree(ant_array):
             j += 1
         k = len(ant_array) * 2 / 3 + 1
         while k < len(ant_array):
-            ant_array[k][len(ant_array[0])*3/7] = BROWN
-            ant_array[k][len(ant_array[0])*4/7] = BROWN
+            ant_array[k][len(ant_array[0]) * 3 / 7] = BROWN
+            ant_array[k][len(ant_array[0]) * 4 / 7] = BROWN
             k += 1
+
+        ant_array[25][50] = YELLOW
+        ant_array[25][51] = YELLOW
+        ant_array[26][51] = YELLOW
+        ant_array[26][52] = YELLOW
+
+    for i in checkNeighbours(ant_array):
+        if ant_array[i[0]][i[1]] == WHITE:
+            if i[2] == 3:
+                if ant_array[i[3]][i[4]] == YELLOW:
+                    ant_array[i[0]][i[1]] = YELLOW
+        if ant_array[i[0]][i[1]] == YELLOW:
+            if i[2] != 3:
+                ant_array[i[0]][i[1]] = WHITE
 
     #    if checkIfEmpty(ant_array):
     #        middle = len(ant_array[0])
