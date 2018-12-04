@@ -219,14 +219,12 @@ def special_ants(ant_array):
                 elif ant_array[i[3]][i[4]] == YELLOW:
                     ant_array[i[0]][i[1]] = YELLOW
                 else:
-                    #print ant_array[12][6]
-                    print str(i[0]) + " " + str(i[1]) + " " + str(ant_array[i[0]][i[1]]) + " " + str(i[2]) + " " + str(i[3]) + " " + str(i[4]) + " " + str(ant_array[i[3]][i[4]])
                     ant_array[i[0]][i[1]] = BLACK
         else:
             if i[2] != 3 and i[2] != 5:
-                #print str(ant_array[13][6]) + " - " + str(ant_array[12][6])
                 ant_array[i[0]][i[1]] = WHITE
     return ant_array
+
 
 # 24/3 Welt
 def special_ants2(ant_array):
@@ -236,7 +234,6 @@ def special_ants2(ant_array):
         ant_array[21][21] = RED
         ant_array[21][22] = RED
         ant_array[22][21] = RED
-
 
     for i in checkNeighbours(ant_array):
         if ant_array[i[0]][i[1]] == WHITE:
@@ -249,6 +246,7 @@ def special_ants2(ant_array):
                 ant_array[i[0]][i[1]] = RED
     return ant_array
 
+
 def special_ants3(ant_array):
     if checkIfEmpty(ant_array):
         ant_array[20][20] = BLUE
@@ -257,7 +255,6 @@ def special_ants3(ant_array):
         ant_array[22][20] = BLUE
         ant_array[22][21] = BLUE
         ant_array[22][22] = BLUE
-
 
     for i in checkNeighbours(ant_array):
         if ant_array[i[0]][i[1]] == WHITE:
@@ -272,54 +269,4 @@ def special_ants3(ant_array):
                 ant_array[i[0]][i[1]] = BLUE
             if i[2] == 5:
                 ant_array[i[0]][i[1]] = BLUE
-    return ant_array
-
-
-
-def christmas_tree(ant_array):
-    if checkIfEmpty(ant_array):
-        middle = len(ant_array[0]) / 2
-        i = 0
-        while i < len(ant_array) - len(ant_array) / 3:
-            ant_array[i][middle - i] = DARK_GREEN
-            ant_array[i][middle + i] = DARK_GREEN
-            i += 1
-        j = middle - i + 1
-        while j < middle + i:
-            ant_array[len(ant_array) * 2 / 3][j] = DARK_GREEN
-            j += 1
-        k = len(ant_array) * 2 / 3 + 1
-        while k < len(ant_array):
-            ant_array[k][len(ant_array[0]) * 3 / 7] = BROWN
-            ant_array[k][len(ant_array[0]) * 4 / 7] = BROWN
-            k += 1
-
-        ant_array[25][50] = YELLOW
-        ant_array[25][51] = YELLOW
-        ant_array[26][51] = YELLOW
-        ant_array[26][52] = YELLOW
-
-    for i in checkNeighbours(ant_array):
-        if ant_array[i[0]][i[1]] == WHITE:
-            if i[2] == 3:
-                if ant_array[i[3]][i[4]] == YELLOW:
-                    ant_array[i[0]][i[1]] = YELLOW
-        if ant_array[i[0]][i[1]] == YELLOW:
-            if i[2] != 3:
-                ant_array[i[0]][i[1]] = WHITE
-
-    #    if checkIfEmpty(ant_array):
-    #        middle = len(ant_array[0])
-    #        i = 0
-    #        while i < len(ant_array):
-    #            ant_array[i][middle / 2] = GREEN
-    #            i += 1
-    #
-    #    for i in checkNeighbours(ant_array):
-    #       if ant_array[i[0]][i[1]] == WHITE:
-    #            if i[2] == 3:
-    #                ant_array[i[0]][i[1]] = RED
-    #        else:
-    #            if i[2] != 3 and i[2] != 5:
-    #                ant_array[i[0]][i[1]] = WHITE
     return ant_array

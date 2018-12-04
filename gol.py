@@ -90,8 +90,6 @@ class NimGui(object):
             mutated_ants = golalgo.special_ants2(ants_as_list)
         if self.rules.get() == 4:
             mutated_ants = golalgo.special_ants3(ants_as_list)
-        if self.rules.get() == 5:
-            mutated_ants = golalgo.christmas_tree(ants_as_list)
         numpy_image = np.array(mutated_ants).astype('uint8')
         self.life_image = Image.fromarray(numpy_image)
         self.draw = ImageDraw.Draw(self.life_image)
@@ -118,7 +116,6 @@ class NimGui(object):
         menu_options.add_radiobutton(label="Spezial (Extra)", value=2, variable=self.rules)
         menu_options.add_radiobutton(label="Spezial2 (Extra)", value=3, variable=self.rules)
         menu_options.add_radiobutton(label="Spezial3 (Extra)", value=4, variable=self.rules)
-        menu_options.add_radiobutton(label="Christmas Tree (Extra)", value=5, variable=self.rules)
         menu_neu.add_command(label="100x50", underline=0, command=lambda: self.set_image_size((100, 50)))
         menu_neu.add_command(label="150x100", underline=1, command=lambda: self.set_image_size((150, 100)))
         menu_neu.add_command(label="200x150", underline=1, command=lambda: self.set_image_size((200, 150)))
