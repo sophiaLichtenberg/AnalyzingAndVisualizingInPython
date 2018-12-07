@@ -226,14 +226,30 @@ def special_ants(ant_array):
     return ant_array
 
 
-# 24/3 Welt
+# 24/3 Welt, sh. Wikipedia
 def special_ants2(ant_array):
     if checkIfEmpty(ant_array):
+        #Object 1
         ant_array[20][21] = RED
         ant_array[21][20] = RED
         ant_array[21][21] = RED
         ant_array[21][22] = RED
         ant_array[22][21] = RED
+
+        #Object 2
+        ant_array[40][40] = RED
+        ant_array[40][41] = RED
+        ant_array[41][40] = RED
+        ant_array[41][41] = RED
+        ant_array[42][41] = RED
+
+        # Object 3
+        ant_array[30][61] = RED
+        ant_array[31][60] = RED
+        ant_array[31][61] = RED
+        ant_array[32][61] = RED
+        ant_array[32][62] = RED
+
 
     for i in checkNeighbours(ant_array):
         if ant_array[i[0]][i[1]] == WHITE:
@@ -244,9 +260,12 @@ def special_ants2(ant_array):
                 ant_array[i[0]][i[1]] = WHITE
             if i[2] == 4:
                 ant_array[i[0]][i[1]] = RED
+            if i[2] == 2:
+                ant_array[i[0]][i[1]] = RED
     return ant_array
 
 
+# Qualle, sh. Wikipedia
 def special_ants3(ant_array):
     if checkIfEmpty(ant_array):
         ant_array[20][20] = BLUE
@@ -255,6 +274,14 @@ def special_ants3(ant_array):
         ant_array[22][20] = BLUE
         ant_array[22][21] = BLUE
         ant_array[22][22] = BLUE
+
+        ant_array[40][40] = BLUE
+        ant_array[41][40] = BLUE
+        ant_array[41][41] = BLUE
+        ant_array[42][40] = BLUE
+        ant_array[42][41] = BLUE
+        ant_array[42][42] = BLUE
+
 
     for i in checkNeighbours(ant_array):
         if ant_array[i[0]][i[1]] == WHITE:
