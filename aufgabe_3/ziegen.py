@@ -14,11 +14,12 @@ class MontyHall:
 
     def __init__(self, numberDoors):
         self.numberDoors = numberDoors
-        for i in range(1, numberDoors + 1):
+        self.doors = []
+
+        for i in range(1, int(numberDoors) + 1):
             self.doors.append(Door(str(i)))
-        print self.doors
+
         random.choice(self.doors).car = True
-        #self.doors[0].car = True
 
     def choose(self, id):
         for door in self.doors:
@@ -36,8 +37,6 @@ class MontyHall:
         if len(openedDoors) != len(self.doors) - 2:
             openedDoors.remove(str(random.sample(openedDoors, 1)[0]))
 
-            # openedDoors.remove(random.sample(openedDoors, 1))
-            # openedDoors.discard(random.sample(openedDoors, 1))
         return openedDoors
 
     def open_door(self, swap):
@@ -50,11 +49,51 @@ class MontyHall:
                         return False
         if swap:
             for door in self.doors:
-                if door.chosen and door.car:
-                    return False
-                else:
-                    return True
+                if door.chosen:
+                    if door.car:
+                        return False
+                    else:
+                        return True
 
-game = MontyHall(3)
-game.choose(1)
-print game.open_empty_doors()
+
+def play(number_doors=3):
+    chosen_door = raw_input("Which door to choose (1-" + str(number_doors) + "): ")
+    game = MontyHall(number_doors)
+    game.choose(str(chosen_door))
+    for id in game.open_empty_doors():
+        print "Hosts opens door " + str(id)
+    swap = raw_input("Swap (s) or keep (k): ")
+    if swap == "s":
+        if game.open_door(True):
+            print "Car!"
+        else:
+            print "Goat!"
+    elif swap == "k":
+        if game.open_door(False):
+            print "Car!"
+        else:
+            print "Goat!"
+    else:
+        print "Invalid input"
+
+
+def simulate(number_doors=3, number_games=10000, swap=True):
+    counter = 0
+    for i in range(1, number_games + 1):
+        game = MontyHall(number_doors)
+        game.choose_random()
+        if swap:
+            if game.open_door(True):
+                counter += 1
+        else:
+            if game.open_door(False):
+                counter += 1
+    print counter
+
+    return float(float(counter)/float(number_games))
+
+
+print simulate()
+'''
+play(raw_input("Please enter the number of doors(min. 3): "))
+'''
