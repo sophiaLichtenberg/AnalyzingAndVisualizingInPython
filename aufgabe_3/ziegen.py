@@ -57,24 +57,38 @@ class MontyHall:
 
 
 def play(number_doors=3):
-    chosen_door = raw_input("Which door to choose (1-" + str(number_doors) + "): ")
-    game = MontyHall(number_doors)
-    game.choose(str(chosen_door))
-    for id in game.open_empty_doors():
-        print "Hosts opens door " + str(id)
-    swap = raw_input("Swap (s) or keep (k): ")
-    if swap == "s":
-        if game.open_door(True):
-            print "Car!"
+    car_emoji = u'\U0001F697'
+    goat_emoji = u'\U0001F410'
+    door_emoji = u'\U0001F6AA'
+    arrow_emoji = u"\U000027A1"
+
+    if int(number_doors) < 3:
+        number_doors = "3"
+        print " --- Minimum 3 doors! --- "
+
+    chosen_door = raw_input("Which door to choose (1-" + number_doors + "): ")
+
+    if 0 < int(chosen_door) <= int(number_doors):
+        game = MontyHall(number_doors)
+        game.choose(str(chosen_door))
+        for id in game.open_empty_doors():
+            print "Host opens door " + id + " " + door_emoji + " " + arrow_emoji + " " + goat_emoji
+        swap = raw_input("Swap (s) or keep (k): ")
+        if swap == "s":
+            if game.open_door(True):
+                print "\n" + door_emoji + " " + arrow_emoji + " " + car_emoji + "\nCar! "
+            else:
+                print "\n" + door_emoji + " " + arrow_emoji + " " + goat_emoji + "\nGoat! "
+        elif swap == "k":
+            if game.open_door(False):
+                print "\n" + door_emoji + " " + arrow_emoji + " " + car_emoji + "\nCar! "
+            else:
+                print "\n" + door_emoji + " " + arrow_emoji + " " + goat_emoji + "\nGoat! "
         else:
-            print "Goat!"
-    elif swap == "k":
-        if game.open_door(False):
-            print "Car!"
-        else:
-            print "Goat!"
+            print " --- Invalid input --- "
     else:
-        print "Invalid input"
+        print " --- Door ID not in possibilities! --- "
+        play(number_doors)
 
 
 def simulate(number_doors=3, number_games=10000, swap=True):
@@ -88,12 +102,9 @@ def simulate(number_doors=3, number_games=10000, swap=True):
         else:
             if game.open_door(False):
                 counter += 1
-    print counter
 
-    return float(float(counter)/float(number_games))
+    return float(float(counter) / float(number_games))
 
 
 print simulate()
-'''
-play(raw_input("Please enter the number of doors(min. 3): "))
-'''
+# play(raw_input("Please enter the number of doors(min. 3): "))
