@@ -7,9 +7,13 @@ wn.title("Pac-Man")
 wn.setup(640, 480)
 
 wall_shape = os.path.join(os.getcwd(), "wall.gif")
-player_shape = os.path.join(os.getcwd(), "pacman.gif")
+fruit_shape = os.path.join(os.getcwd(), "cherry.gif")
+player_shape = os.path.join(os.getcwd(), "pacman_right.gif")
 wn.register_shape(wall_shape)
+wn.register_shape(fruit_shape)
 wn.register_shape(player_shape)
+
+width = 32
 
 
 # Die Mauern des Labyrinths
@@ -21,35 +25,76 @@ class Sprite(t.Turtle):
         self.penup()
         self.speed(0)
 
+    def delete(self):
+        self.shape(None)
+
 
 class Player(Sprite):
 
     def __init__(self, shape):
         Sprite.__init__(self, shape)
 
+    def changeShape(self, res):
+        wn.register_shape(os.path.join(os.getcwd(), res))
+        self.shape(os.path.join(os.getcwd(), res))
+
     def go_left(self):
-        go_to_x = self.xcor() - 32
+        res = "pacman_left.gif"
+        self.changeShape(res)
+
+        go_to_x = self.xcor() - width
         go_to_y = self.ycor()
         if (go_to_x, go_to_y) not in walls:
             self.goto(go_to_x, go_to_y)
+
+        if (go_to_x, go_to_y) in fruits:
+            self.goto(go_to_x, go_to_y)
+            print "Cherry"
+            print fruits
+            fruits.pop(fruits.index((go_to_x, go_to_y)))
 
     def go_right(self):
-        go_to_x = self.xcor() + 32
+        res = "pacman_right.gif"
+        self.changeShape(res)
+
+        go_to_x = self.xcor() + width
         go_to_y = self.ycor()
         if (go_to_x, go_to_y) not in walls:
             self.goto(go_to_x, go_to_y)
 
+        if (go_to_x, go_to_y) in fruits:
+            self.goto(go_to_x, go_to_y)
+            print "Cherry"
+            print fruits
+            fruits.pop(fruits.index((go_to_x, go_to_y)))
+
     def go_up(self):
+        res = "pacman_up.gif"
+        self.changeShape(res)
         go_to_x = self.xcor()
-        go_to_y = self.ycor() + 32
+        go_to_y = self.ycor() + width
         if (go_to_x, go_to_y) not in walls:
             self.goto(go_to_x, go_to_y)
 
+        if (go_to_x, go_to_y) in fruits:
+            self.goto(go_to_x, go_to_y)
+            print "Cherry"
+            print fruits
+            fruits.pop(fruits.index((go_to_x, go_to_y)))
+
     def go_down(self):
+        res = "pacman_down.gif"
+        self.changeShape(res)
         go_to_x = self.xcor()
-        go_to_y = self.ycor() - 32
+        go_to_y = self.ycor() - width
         if (go_to_x, go_to_y) not in walls:
             self.goto(go_to_x, go_to_y)
+
+        if (go_to_x, go_to_y) in fruits:
+            self.goto(go_to_x, go_to_y)
+            print "Cherry"
+            print fruits
+            fruits.pop(fruits.index((go_to_x, go_to_y)))
 
 
 # Liste der Labyrinthe
@@ -57,14 +102,14 @@ levels = []
 
 level_1 = [
     "####################",
-    "# @#               #",
+    "# @#ff             #",
     "#  #######  #####  #",
-    "#        #  #      #",
-    "#        #  #####  #",
-    "#######  #  #      #",
+    "#        #  #f     #",
+    "# f      #  #####  #",
+    "#######  #  #f     #",
     "#        #  #####  #",
     "#  #######    #    #",
-    "#             #    #",
+    "#             # f  #",
     "#  #################",
     "#                  #",
     "####  ###########  #",
@@ -81,16 +126,20 @@ def setup_maze(level):
     for y in range(len(level)):
         for x in range(len(level[y])):
             sprite = level[y][x]
-            screen_x = -308 + (x * 32)
-            screen_y = 224 - (y * 32)
+            screen_x = -308 + (x * width)
+            screen_y = 224 - (y * width)
 
             if sprite == "#":
                 wall.goto(screen_x, screen_y)
                 walls.append((screen_x, screen_y))
                 wall.stamp()
-            elif sprite == "@":
+            if sprite == "@":
                 rogue.goto(screen_x, screen_y)
                 rogue.stamp
+            if sprite == "f":
+                fruit.goto(screen_x, screen_y)
+                fruits.append((screen_x, screen_y))
+                fruit.stamp()
 
 
 def exitGame():
@@ -99,7 +148,9 @@ def exitGame():
 
 
 walls = []
+fruits = []
 wall = Sprite(wall_shape)
+fruit = Sprite(fruit_shape)
 rogue = Player(player_shape)
 
 # Auf Tastaturereignisse lauschen
