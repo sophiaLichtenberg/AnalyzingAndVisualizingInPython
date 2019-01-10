@@ -1,17 +1,19 @@
 import turtle as t
 import os
+import time
 
 wn = t.Screen()
 wn.bgcolor("black")
-wn.title("Pac-Man")
 wn.setup(640, 480)
 
 wall_shape = os.path.join(os.getcwd(), "wall.gif")
 fruit_shape = os.path.join(os.getcwd(), "cherry.gif")
 player_shape = os.path.join(os.getcwd(), "pacman_right.gif")
+door_shape = os.path.join(os.getcwd(), "door.gif")
 wn.register_shape(wall_shape)
 wn.register_shape(fruit_shape)
 wn.register_shape(player_shape)
+wn.register_shape(door_shape)
 
 width = 32
 
@@ -30,6 +32,7 @@ class Sprite(t.Turtle):
 
 
 class Player(Sprite):
+    counter = 0
 
     def __init__(self, shape):
         Sprite.__init__(self, shape)
@@ -47,11 +50,23 @@ class Player(Sprite):
         if (go_to_x, go_to_y) not in walls:
             self.goto(go_to_x, go_to_y)
 
+        if (go_to_x, go_to_y) == (door.xcor(), door.ycor()):
+            self.goto(go_to_x, go_to_y)
+            t.color("white")
+            t.hideturtle()
+            t.write("Next Level", move=False, align="center", font=("Arial", 20, "normal"))
+            wn.tracer(0)
+            time.sleep(2)
+            wn.clear()
+            wn.bgcolor("black")
+            setup_maze(levels[1])
+
         if (go_to_x, go_to_y) in fruits:
             self.goto(go_to_x, go_to_y)
             print "Cherry"
             print fruits
             fruits.pop(fruits.index((go_to_x, go_to_y)))
+            self.counter += 1
 
     def go_right(self):
         res = "pacman_right.gif"
@@ -62,11 +77,23 @@ class Player(Sprite):
         if (go_to_x, go_to_y) not in walls:
             self.goto(go_to_x, go_to_y)
 
+        if (go_to_x, go_to_y) == (door.xcor(), door.ycor()):
+            self.goto(go_to_x, go_to_y)
+            t.color("white")
+            t.hideturtle()
+            t.write("Next Level", move=False, align="center", font=("Arial", 20, "normal"))
+            wn.tracer(0)
+            time.sleep(2)
+            wn.clear()
+            wn.bgcolor("black")
+            setup_maze(levels[1])
+
         if (go_to_x, go_to_y) in fruits:
             self.goto(go_to_x, go_to_y)
             print "Cherry"
             print fruits
             fruits.pop(fruits.index((go_to_x, go_to_y)))
+            self.counter += 1
 
     def go_up(self):
         res = "pacman_up.gif"
@@ -76,11 +103,23 @@ class Player(Sprite):
         if (go_to_x, go_to_y) not in walls:
             self.goto(go_to_x, go_to_y)
 
+        if (go_to_x, go_to_y) == (door.xcor(), door.ycor()):
+            self.goto(go_to_x, go_to_y)
+            t.color("white")
+            t.hideturtle()
+            t.write("Next Level", move=False, align="center", font=("Arial", 20, "normal"))
+            wn.tracer(0)
+            time.sleep(2)
+            wn.clear()
+            wn.bgcolor("black")
+            setup_maze(levels[1])
+
         if (go_to_x, go_to_y) in fruits:
             self.goto(go_to_x, go_to_y)
             print "Cherry"
             print fruits
             fruits.pop(fruits.index((go_to_x, go_to_y)))
+            self.counter += 1
 
     def go_down(self):
         res = "pacman_down.gif"
@@ -90,11 +129,23 @@ class Player(Sprite):
         if (go_to_x, go_to_y) not in walls:
             self.goto(go_to_x, go_to_y)
 
+        if (go_to_x, go_to_y) == (door.xcor(), door.ycor()):
+            self.goto(go_to_x, go_to_y)
+            t.color("white")
+            t.hideturtle()
+            t.write("Next Level", move=False, align="center", font=("Arial", 20, "normal"))
+            wn.tracer(0)
+            time.sleep(2)
+            wn.clear()
+            wn.bgcolor("black")
+            setup_maze(levels[1])
+
         if (go_to_x, go_to_y) in fruits:
             self.goto(go_to_x, go_to_y)
             print "Cherry"
             print fruits
             fruits.pop(fruits.index((go_to_x, go_to_y)))
+            self.counter += 1
 
 
 # Liste der Labyrinthe
@@ -109,16 +160,35 @@ level_1 = [
     "#######  #  #f     #",
     "#        #  #####  #",
     "#  #######    #    #",
-    "#             # f  #",
+    "#             # f d#",
     "#  #################",
     "#                  #",
     "####  ###########  #",
     "#            #     #",
-    "#            #     #",
+    "#            #f    #",
+    "####################"
+]
+
+level_2 = [
+    "####################",
+    "#ff#ff  #f  #   @ @#",
+    "#  # #####  #  #####",
+    "#  #     #  #      #",
+    "#  ####  #  ####   #",
+    "#        #  #f     #",
+    "#        #     #   #",
+    "#  #############   #",
+    "#              #   #",
+    "#   ########   #   #",
+    "#   #  d# f#   #   #",
+    "#   #          #   #",
+    "#   ############   #",
+    "#                  #",
     "####################"
 ]
 
 levels.append(level_1)
+levels.append(level_2)
 
 
 # Level Setup
@@ -140,6 +210,9 @@ def setup_maze(level):
                 fruit.goto(screen_x, screen_y)
                 fruits.append((screen_x, screen_y))
                 fruit.stamp()
+            if sprite == "d":
+                door.goto(screen_x, screen_y)
+                door.stamp()
 
 
 def exitGame():
@@ -152,6 +225,7 @@ fruits = []
 wall = Sprite(wall_shape)
 fruit = Sprite(fruit_shape)
 rogue = Player(player_shape)
+door = Sprite(door_shape)
 
 # Auf Tastaturereignisse lauschen
 t.listen()
