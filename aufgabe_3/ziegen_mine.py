@@ -12,19 +12,19 @@ class Door:
 class MontyHall:
     doors = []
 
-    def __init__(self, numberDoors):
-        self.numberDoors = numberDoors
+    def __init__(self, num_doors):
+        self.numDoors = num_doors
         self.doors = []
 
-        for i in range(1, int(numberDoors) + 1):
+        for i in range(1, num_doors + 1):
             self.doors.append(Door(str(i)))
 
         random.choice(self.doors).car = True
 
     def choose(self, id):
-        for door in self.doors:
-            if door.id == str(id):
-                door.chosen = True
+        for i in self.doors:
+            if i.id == id:
+                i.chosen = True
 
     def choose_random(self):
         random.choice(self.doors).chosen = True
@@ -56,55 +56,50 @@ class MontyHall:
                         return True
 
 
-def play(number_doors=3):
+def play(num_doors=3):
     car_emoji = u'\U0001F697'
     goat_emoji = u'\U0001F410'
     door_emoji = u'\U0001F6AA'
     arrow_emoji = u"\U000027A1"
-
-    if int(number_doors) < 3:
-        number_doors = "3"
+    if int(num_doors) < 3:
+        num_doors = "3"
         print " --- Minimum 3 doors! --- "
+    chosen_door = raw_input("Which door to choose (1-" + num_doors + "): ")
+    if int(chosen_door) <= int(num_doors):
+        doors = MontyHall(int(num_doors))
+        doors.choose(str(chosen_door))
+        for i in doors.open_empty_doors():
+            print "Host opens door " + i + " " + door_emoji + " " + arrow_emoji + " " + goat_emoji
+        swap_or_keep = raw_input("Swap (s) or keep (k): ")
 
-    chosen_door = raw_input("Which door to choose (1-" + number_doors + "): ")
-
-    if 0 < int(chosen_door) <= int(number_doors):
-        game = MontyHall(number_doors)
-        game.choose(str(chosen_door))
-        for id in game.open_empty_doors():
-            print "Host opens door " + id + " " + door_emoji + " " + arrow_emoji + " " + goat_emoji
-        swap = raw_input("Swap (s) or keep (k): ")
-        if swap == "s":
-            if game.open_door(True):
+        if swap_or_keep == "s":
+            if doors.open_door(True):
                 print "\n" + door_emoji + " " + arrow_emoji + " " + car_emoji + "\nCar! "
             else:
                 print "\n" + door_emoji + " " + arrow_emoji + " " + goat_emoji + "\nGoat! "
-        elif swap == "k":
-            if game.open_door(False):
+        elif swap_or_keep == "k":
+            if doors.open_door(False):
                 print "\n" + door_emoji + " " + arrow_emoji + " " + car_emoji + "\nCar! "
             else:
                 print "\n" + door_emoji + " " + arrow_emoji + " " + goat_emoji + "\nGoat! "
         else:
-            print " --- Invalid input --- "
+            print " --- Not valid input! --- "
     else:
         print " --- Door ID not in possibilities! --- "
-        play(number_doors)
 
 
-def simulate(number_doors=3, number_games=10000, swap=True):
-    counter = 0
-    for i in range(1, number_games + 1):
-        game = MontyHall(number_doors)
+def simulate(num_doors=3, num_games=10000, strategy=True):
+    won = 0
+    for i in range(num_games):
+        game = MontyHall(num_doors)
         game.choose_random()
-        if swap:
-            if game.open_door(True):
-                counter += 1
-        else:
-            if game.open_door(False):
-                counter += 1
+        game.open_empty_doors()
+        if game.open_door(strategy):
+                won += 1
 
-    return float(float(counter) / float(number_games))
+    return float(float(won) / float(num_games))
 
 
-# print simulate(3, 10000, False)
-play(raw_input("Please enter the number of doors(min. 3): "))
+# play(raw_input("Enter number of Doors: "))
+print simulate(3, 100, True)
+print simulate(3, 100, False)

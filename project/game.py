@@ -47,9 +47,12 @@ class Player(Sprite):
 
         go_to_x = self.xcor() - width
         go_to_y = self.ycor()
+
+        #hit the wall
         if (go_to_x, go_to_y) not in walls:
             self.goto(go_to_x, go_to_y)
 
+        # Hit the door
         if (go_to_x, go_to_y) == (door.xcor(), door.ycor()):
             self.goto(go_to_x, go_to_y)
             t.color("white")
@@ -61,6 +64,7 @@ class Player(Sprite):
             wn.bgcolor("black")
             setup_maze(levels[1])
 
+        # hit a cherry
         if (go_to_x, go_to_y) in fruits:
             self.goto(go_to_x, go_to_y)
             print "Cherry"
@@ -138,6 +142,7 @@ class Player(Sprite):
             time.sleep(2)
             wn.clear()
             wn.bgcolor("black")
+
             setup_maze(levels[1])
 
         if (go_to_x, go_to_y) in fruits:
@@ -171,7 +176,7 @@ level_1 = [
 
 level_2 = [
     "####################",
-    "#ff#ff  #f  #   @ @#",
+    "#ff#ff  #f  #   @  #",
     "#  # #####  #  #####",
     "#  #     #  #      #",
     "#  ####  #  ####   #",
@@ -205,7 +210,8 @@ def setup_maze(level):
                 wall.stamp()
             if sprite == "@":
                 rogue.goto(screen_x, screen_y)
-                rogue.stamp
+                print str(screen_x) + " " + str(screen_y)
+                #rogue.stamp
             if sprite == "f":
                 fruit.goto(screen_x, screen_y)
                 fruits.append((screen_x, screen_y))
