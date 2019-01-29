@@ -230,7 +230,6 @@ def setup_maze(level):
             if sprite == "@":
                 rogue = Player(player_shape)
                 rogue.goto(screen_x, screen_y)
-                print str(screen_x) + " " + str(screen_y)
 
                 # Auf Tastaturereignisse lauschen
                 t.listen()
