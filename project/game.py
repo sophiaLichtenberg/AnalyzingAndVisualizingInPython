@@ -62,6 +62,8 @@ class Player(Sprite):
             time.sleep(2)
             wn.clear()
             wn.bgcolor("black")
+            del walls[:]
+            del fruits[:]
             setup_maze(levels[1])
 
         # hit a cherry
@@ -93,6 +95,8 @@ class Player(Sprite):
             time.sleep(2)
             wn.clear()
             wn.bgcolor("black")
+            del walls[:]
+            del fruits[:]
             setup_maze(levels[1])
 
         for fruit in fruits:
@@ -122,6 +126,8 @@ class Player(Sprite):
             time.sleep(2)
             wn.clear()
             wn.bgcolor("black")
+            del walls[:]
+            del fruits[:]
             setup_maze(levels[1])
 
         for fruit in fruits:
@@ -151,7 +157,8 @@ class Player(Sprite):
             time.sleep(2)
             wn.clear()
             wn.bgcolor("black")
-
+            del walls[:]
+            del fruits[:]
             setup_maze(levels[1])
 
         for fruit in fruits:
@@ -221,9 +228,17 @@ def setup_maze(level):
                 walls.append((screen_x, screen_y))
                 wall.stamp()
             if sprite == "@":
+                rogue = Player(player_shape)
                 rogue.goto(screen_x, screen_y)
                 print str(screen_x) + " " + str(screen_y)
-                #rogue.stamp
+
+                # Auf Tastaturereignisse lauschen
+                t.listen()
+                t.onkey(rogue.go_left, "Left")
+                t.onkey(rogue.go_right, "Right")
+                t.onkey(rogue.go_up, "Up")
+                t.onkey(rogue.go_down, "Down")
+                t.onkey(exitGame, "Escape")  # Escape beendet das Spiel
             if sprite == "f":
                 fruit = Sprite(fruit_shape)
                 fruit.goto(screen_x, screen_y)
@@ -242,16 +257,8 @@ def exitGame():
 walls = []
 fruits = []
 wall = Sprite(wall_shape)
-rogue = Player(player_shape)
 door = Sprite(door_shape)
 
-# Auf Tastaturereignisse lauschen
-t.listen()
-t.onkey(rogue.go_left, "Left")
-t.onkey(rogue.go_right, "Right")
-t.onkey(rogue.go_up, "Up")
-t.onkey(rogue.go_down, "Down")
-t.onkey(exitGame, "Escape")  # Escape beendet das Spiel
 
 wn.tracer(0)
 setup_maze(levels[0])
