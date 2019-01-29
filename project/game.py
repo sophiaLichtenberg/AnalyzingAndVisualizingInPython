@@ -65,12 +65,15 @@ class Player(Sprite):
             setup_maze(levels[1])
 
         # hit a cherry
-        if (go_to_x, go_to_y) in fruits:
-            self.goto(go_to_x, go_to_y)
-            print "Cherry"
-            print fruits
-            fruits.pop(fruits.index((go_to_x, go_to_y)))
-            self.counter += 1
+        for fruit in fruits:
+            if (go_to_x, go_to_y) == fruit[1]:
+                fruit[0].goto(-1000,1000)
+                fruit[0].clear()
+                self.goto(go_to_x, go_to_y)
+                print "Cherry"
+                fruits.remove(fruit)
+                print fruits
+                self.counter += 1
 
     def go_right(self):
         res = "pacman_right.gif"
@@ -92,12 +95,15 @@ class Player(Sprite):
             wn.bgcolor("black")
             setup_maze(levels[1])
 
-        if (go_to_x, go_to_y) in fruits:
-            self.goto(go_to_x, go_to_y)
-            print "Cherry"
-            print fruits
-            fruits.pop(fruits.index((go_to_x, go_to_y)))
-            self.counter += 1
+        for fruit in fruits:
+            if (go_to_x, go_to_y) == fruit[1]:
+                fruit[0].goto(-1000,1000)
+                fruit[0].clear()
+                self.goto(go_to_x, go_to_y)
+                print "Cherry"
+                fruits.remove(fruit)
+                print fruits
+                self.counter += 1
 
     def go_up(self):
         res = "pacman_up.gif"
@@ -118,12 +124,15 @@ class Player(Sprite):
             wn.bgcolor("black")
             setup_maze(levels[1])
 
-        if (go_to_x, go_to_y) in fruits:
-            self.goto(go_to_x, go_to_y)
-            print "Cherry"
-            print fruits
-            fruits.pop(fruits.index((go_to_x, go_to_y)))
-            self.counter += 1
+        for fruit in fruits:
+            if (go_to_x, go_to_y) == fruit[1]:
+                fruit[0].goto(-1000,1000)
+                fruit[0].clear()
+                self.goto(go_to_x, go_to_y)
+                print "Cherry"
+                fruits.remove(fruit)
+                print fruits
+                self.counter += 1
 
     def go_down(self):
         res = "pacman_down.gif"
@@ -145,12 +154,15 @@ class Player(Sprite):
 
             setup_maze(levels[1])
 
-        if (go_to_x, go_to_y) in fruits:
-            self.goto(go_to_x, go_to_y)
-            print "Cherry"
-            print fruits
-            fruits.pop(fruits.index((go_to_x, go_to_y)))
-            self.counter += 1
+        for fruit in fruits:
+            if (go_to_x, go_to_y) == fruit[1]:
+                fruit[0].goto(-1000,1000)
+                fruit[0].clear()
+                self.goto(go_to_x, go_to_y)
+                print "Cherry"
+                fruits.remove(fruit)
+                print fruits
+                self.counter += 1
 
 
 # Liste der Labyrinthe
@@ -213,8 +225,9 @@ def setup_maze(level):
                 print str(screen_x) + " " + str(screen_y)
                 #rogue.stamp
             if sprite == "f":
+                fruit = Sprite(fruit_shape)
                 fruit.goto(screen_x, screen_y)
-                fruits.append((screen_x, screen_y))
+                fruits.append([fruit, (screen_x, screen_y)])
                 fruit.stamp()
             if sprite == "d":
                 door.goto(screen_x, screen_y)
@@ -229,7 +242,6 @@ def exitGame():
 walls = []
 fruits = []
 wall = Sprite(wall_shape)
-fruit = Sprite(fruit_shape)
 rogue = Player(player_shape)
 door = Sprite(door_shape)
 
