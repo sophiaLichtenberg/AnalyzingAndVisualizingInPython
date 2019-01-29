@@ -55,9 +55,12 @@ class Player(Sprite):
         # Hit the door
         if (go_to_x, go_to_y) == (door.xcor(), door.ycor()):
             self.goto(go_to_x, go_to_y)
-            t.color("white")
+            t.undo()
+            t.penup()
             t.hideturtle()
-            t.write("Next Level", move=False, align="center", font=("Arial", 20, "normal"))
+            t.color("white")
+            t.setposition(width / 2, 0)
+            t.write("Next Level ", move=False, align="center", font=("Arial", 20, "normal"))
             wn.tracer(0)
             time.sleep(2)
             wn.clear()
@@ -76,6 +79,12 @@ class Player(Sprite):
                 fruits.remove(fruit)
                 print fruits
                 self.counter += 1
+                t.undo()
+                t.penup()
+                t.hideturtle()
+                t.color("white")
+                t.setposition(-260, 207)
+                t.write("Score " + str(self.counter), move=False, align="center", font=("Arial", 20, "normal"))
 
     def go_right(self):
         res = "pacman_right.gif"
@@ -88,9 +97,12 @@ class Player(Sprite):
 
         if (go_to_x, go_to_y) == (door.xcor(), door.ycor()):
             self.goto(go_to_x, go_to_y)
-            t.color("white")
+            t.undo()
+            t.penup()
             t.hideturtle()
-            t.write("Next Level", move=False, align="center", font=("Arial", 20, "normal"))
+            t.color("white")
+            t.setposition(-260, 207)
+            t.write("Score " + str(self.counter), move=False, align="center", font=("Arial", 20, "normal"))
             wn.tracer(0)
             time.sleep(2)
             wn.clear()
@@ -108,6 +120,12 @@ class Player(Sprite):
                 fruits.remove(fruit)
                 print fruits
                 self.counter += 1
+                t.undo()
+                t.penup()
+                t.hideturtle()
+                t.color("white")
+                t.setposition(-260, 207)
+                t.write("Score " + str(self.counter), move=False, align="center", font=("Arial", 20, "normal"))
 
     def go_up(self):
         res = "pacman_up.gif"
@@ -119,9 +137,12 @@ class Player(Sprite):
 
         if (go_to_x, go_to_y) == (door.xcor(), door.ycor()):
             self.goto(go_to_x, go_to_y)
-            t.color("white")
+            t.undo()
+            t.penup()
             t.hideturtle()
-            t.write("Next Level", move=False, align="center", font=("Arial", 20, "normal"))
+            t.color("white")
+            t.setposition(width/2, 0)
+            t.write("Next Level ", move=False, align="center", font=("Arial", 20, "normal"))
             wn.tracer(0)
             time.sleep(2)
             wn.clear()
@@ -139,6 +160,12 @@ class Player(Sprite):
                 fruits.remove(fruit)
                 print fruits
                 self.counter += 1
+                t.undo()
+                t.penup()
+                t.hideturtle()
+                t.color("white")
+                t.setposition(-260, 207)
+                t.write("Score " + str(self.counter), move=False, align="center", font=("Arial", 20, "normal"))
 
     def go_down(self):
         res = "pacman_down.gif"
@@ -150,9 +177,12 @@ class Player(Sprite):
 
         if (go_to_x, go_to_y) == (door.xcor(), door.ycor()):
             self.goto(go_to_x, go_to_y)
-            t.color("white")
+            t.undo()
+            t.penup()
             t.hideturtle()
-            t.write("Next Level", move=False, align="center", font=("Arial", 20, "normal"))
+            t.color("white")
+            t.setposition(width / 2, 0)
+            t.write("Next Level ", move=False, align="center", font=("Arial", 20, "normal"))
             wn.tracer(0)
             time.sleep(2)
             wn.clear()
@@ -170,6 +200,12 @@ class Player(Sprite):
                 fruits.remove(fruit)
                 print fruits
                 self.counter += 1
+                t.undo()
+                t.penup()
+                t.hideturtle()
+                t.color("white")
+                t.setposition(-260, 207)
+                t.write("Score " + str(self.counter), move=False, align="center", font=("Arial", 20, "normal"))
 
 
 # Liste der Labyrinthe
