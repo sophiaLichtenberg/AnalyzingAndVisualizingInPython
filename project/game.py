@@ -6,6 +6,8 @@ wn = t.Screen()
 wn.bgcolor("black")
 wn.setup(640, 480)
 
+counter = 0
+
 wall_shape = os.path.join(os.getcwd(), "wall.gif")
 fruit_shape = os.path.join(os.getcwd(), "cherry.gif")
 player_shape = os.path.join(os.getcwd(), "pacman_right.gif")
@@ -47,7 +49,7 @@ class Sprite(t.Turtle):
 
 
 class Player(Sprite):
-    counter = 0
+    global counter
 
     def __init__(self, shape):
         Sprite.__init__(self, shape)
@@ -189,7 +191,7 @@ class Player(Sprite):
                 t.setposition(-260, 207)
                 t.write("Score " + str(self.counter), move=False, align="center", font=("Arial", 20, "normal"))
 
-    def go_down(self, potential_highscore):
+    def go_down(self):
         res = "pacman_down.gif"
         self.changeShape(res)
         go_to_x = self.xcor()
@@ -213,8 +215,7 @@ class Player(Sprite):
             del walls[:]
             del fruits[:]
             print str(self.getCounter())
-            potential_highscore = self.getCounter()
-            setup_maze(levels[1], potential_highscore)
+            setup_maze(levels[1])
 
         for fruit in fruits:
             if (go_to_x, go_to_y) == fruit[1]:
@@ -287,8 +288,7 @@ levels.append(level_2)
 
 
 # Level Setup
-def setup_maze(level, potential_highscore):
-    monster = Monster(monster_shape)
+def setup_maze(level):
     for y in range(len(level)):
         for x in range(len(level[y])):
             sprite = level[y][x]
@@ -302,18 +302,13 @@ def setup_maze(level, potential_highscore):
             if sprite == "@":
                 rogue = Player(player_shape)
                 rogue.goto(screen_x, screen_y)
-<<<<<<< HEAD
-                print str(screen_x) + " " + str(screen_y)
-                monster.move()
-=======
 
->>>>>>> 5eca31b877fd6e11847c5d116923ef960c21fa8c
                 # Auf Tastaturereignisse lauschen
                 t.listen()
                 t.onkey(rogue.go_left, "Left")
                 t.onkey(rogue.go_right,"Right")
                 t.onkey(rogue.go_up, "Up")
-                t.onkey(rogue.go_down(potential_highscore), "Down")
+                t.onkey(rogue.go_down, "Down")
                 t.onkey(exitGame, "Escape")  # Escape beendet das Spiel
             if sprite == "f":
                 fruit = Sprite(fruit_shape)
@@ -325,16 +320,6 @@ def setup_maze(level, potential_highscore):
                 door.stamp()
             if sprite == "m":
                 monster.goto(screen_x, screen_y)
-<<<<<<< HEAD
-                print str(monster.pos())
-                monster.move()
-                monster.move()
-                print str(monster.pos())
-
-
-
-=======
->>>>>>> 5eca31b877fd6e11847c5d116923ef960c21fa8c
 
 
 def exitGame():
@@ -349,17 +334,13 @@ door = Sprite(door_shape)
 monster = Sprite(monster_shape)
 
 wn.tracer(0)
-<<<<<<< HEAD
+
 # bisherigen Highscore auslesen
 with open("highscore.txt") as highscoreContainer:
     highscore = highscoreContainer.read().decode("utf-8")
 print "highscore "+highscore
-potential_highscore = 0
-setup_maze(levels[0], potential_highscore)
 
-=======
 setup_maze(levels[0])
->>>>>>> 5eca31b877fd6e11847c5d116923ef960c21fa8c
 
 keepGoing = True
 while keepGoing:
