@@ -7,6 +7,7 @@ wn.bgcolor("black")
 wn.setup(640, 480)
 
 score = 0
+level_counter = 0
 
 wall_shape = os.path.join(os.getcwd(), "wall.gif")
 fruit_shape = os.path.join(os.getcwd(), "cherry.gif")
@@ -56,13 +57,14 @@ class Monster(t.Turtle):
         global keepGoing
         px = player.xcor()  # Player x
         py = player.ycor()  # Player y
-        mx = self.xcor()    # Monster x
-        my = self.ycor()    # Monster y
+        mx = self.xcor()  # Monster x
+        my = self.ycor()  # Monster y
 
         if py == my:
             if px <= mx + width and px + width >= mx:
                 print 'hit'
                 keepGoing = False
+
 
 # Die Mauern des Labyrinths
 
@@ -84,7 +86,7 @@ class Player(Sprite):
         self.shape(os.path.join(os.getcwd(), res))
 
     def go_left(self):
-        global score
+        global score, level_counter
         res = "pacman_left.gif"
         self.changeShape(res)
 
@@ -96,7 +98,7 @@ class Player(Sprite):
             self.goto(go_to_x, go_to_y)
 
         # hit monster --> end game
-        #if go_to_x <= monster.xcor() + width and go_to_y == monster.ycor():
+        # if go_to_x <= monster.xcor() + width and go_to_y == monster.ycor():
         #    print "Monster"
 
         # Hit the door
@@ -114,7 +116,8 @@ class Player(Sprite):
             wn.bgcolor("black")
             del walls[:]
             del fruits[:]
-            setup_maze(levels[1])
+            level_counter += 1
+            setup_maze()
 
         # hit a cherry
         for fruit in fruits:
@@ -134,7 +137,7 @@ class Player(Sprite):
                 t.write("Score " + str(score), move=False, align="center", font=("Arial", 20, "normal"))
 
     def go_right(self):
-        global score
+        global score, level_counter
         res = "pacman_right.gif"
         self.changeShape(res)
 
@@ -158,7 +161,8 @@ class Player(Sprite):
             wn.bgcolor("black")
             del walls[:]
             del fruits[:]
-            setup_maze(levels[1])
+            level_counter += 1
+            setup_maze()
 
         for fruit in fruits:
             if (go_to_x, go_to_y) == fruit[1]:
@@ -177,7 +181,7 @@ class Player(Sprite):
                 t.write("Score " + str(score), move=False, align="center", font=("Arial", 20, "normal"))
 
     def go_up(self):
-        global score
+        global score, level_counter
         res = "pacman_up.gif"
         self.changeShape(res)
         go_to_x = self.xcor()
@@ -199,7 +203,8 @@ class Player(Sprite):
             wn.bgcolor("black")
             del walls[:]
             del fruits[:]
-            setup_maze(levels[1])
+            level_counter += 1
+            setup_maze()
 
         for fruit in fruits:
             if (go_to_x, go_to_y) == fruit[1]:
@@ -218,7 +223,8 @@ class Player(Sprite):
                 t.write("Score " + str(score), move=False, align="center", font=("Arial", 20, "normal"))
 
     def go_down(self):
-        global score
+        global score, level_counter
+
         res = "pacman_down.gif"
         self.changeShape(res)
         go_to_x = self.xcor()
@@ -241,7 +247,8 @@ class Player(Sprite):
             wn.bgcolor("black")
             del walls[:]
             del fruits[:]
-            setup_maze(levels[1])
+            level_counter += 1
+            setup_maze()
 
         for fruit in fruits:
             if (go_to_x, go_to_y) == fruit[1]:
@@ -260,8 +267,7 @@ class Player(Sprite):
                 t.write("Score " + str(score), move=False, align="center", font=("Arial", 20, "normal"))
 
 
-
-# Liste der Labyrinthe
+# List of Labyrinth
 levels = []
 
 level_1 = [
@@ -300,13 +306,44 @@ level_2 = [
     "####################"
 ]
 
+level_3 = [
+    "####################",
+    "#@       # d#     f#",
+    "#### #####  #  #####",
+    "# f#     #  #     f#",
+    "# f####  #  #     f#",
+    "#        #  #     f#",
+    "#        #     #   #",
+    "#  #############   #",
+    "#              #   #",
+    "#   ########   #   #",
+    "#   #   # f#   #   #",
+    "#   #          #   #",
+    "#   ############   #",
+    "#         m        #",
+    "####################"
+]
+
 levels.append(level_1)
 levels.append(level_2)
+levels.append(level_3)
 
 
 # Level Setup
-def setup_maze(level):
+def setup_maze():
+    global level_counter
     global keepGoing
+
+    if level_counter == 0:
+        level = levels[0]
+        endGame()
+    if level_counter == 1:
+        level = levels[1]
+    if level_counter == 2:
+        level = levels[2]
+    if level_counter > 2:
+        endGame()
+
     for y in range(len(level)):
         for x in range(len(level[y])):
             sprite = level[y][x]
@@ -350,6 +387,19 @@ def exitGame():
     keepGoing = False
 
 
+def endGame():
+    # bisherigen Highscore auslesen
+    with open("highscore.txt") as highscoreContainer:
+        highscore = highscoreContainer.readline()
+    print "highscore " + highscore
+    print type(highscore)
+    highscoreContainer.close()
+
+    if score > float(highscore):
+        f = open("highscore.txt", "w")
+        f.write(str(score))
+
+
 walls = []
 fruits = []
 wall = Sprite(wall_shape)
@@ -358,9 +408,4 @@ door = Sprite(door_shape)
 wn.tracer(0)
 keepGoing = True
 
-# bisherigen Highscore auslesen
-with open("highscore.txt") as highscoreContainer:
-    highscore = highscoreContainer.read().decode("utf-8")
-print "highscore " + highscore
-
-setup_maze(levels[0])
+setup_maze()
