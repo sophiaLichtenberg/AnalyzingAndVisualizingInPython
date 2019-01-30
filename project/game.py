@@ -9,11 +9,13 @@ wn.setup(640, 480)
 wall_shape = os.path.join(os.getcwd(), "wall.gif")
 fruit_shape = os.path.join(os.getcwd(), "cherry.gif")
 player_shape = os.path.join(os.getcwd(), "pacman_right.gif")
+monster_shape = os.path.join(os.getcwd(), "monster.gif")
 door_shape = os.path.join(os.getcwd(), "door.gif")
 wn.register_shape(wall_shape)
 wn.register_shape(fruit_shape)
 wn.register_shape(player_shape)
 wn.register_shape(door_shape)
+wn.register_shape(monster_shape)
 
 width = 32
 
@@ -27,8 +29,20 @@ class Sprite(t.Turtle):
         self.penup()
         self.speed(0)
 
-    def delete(self):
-        self.shape(None)
+    def move(self, go_left=True, go_right=False):
+        # print str(self.xcor()) + " " + str(self.ycor())
+        for wall in walls:
+            if wall[1] == self.ycor():
+                if go_right:
+                    if self.xcor() + width <= wall[0]:
+                        self.goto(self.xcor() + 1, self.ycor())
+                    else:
+                        go_left = True
+                        go_right = False
+
+                if go_left:
+                    if self.xcor() >= wall[0] + width:
+                        self.goto(self.xcor() - 1, self.ycor())
 
 
 class Player(Sprite):
@@ -48,9 +62,13 @@ class Player(Sprite):
         go_to_x = self.xcor() - width
         go_to_y = self.ycor()
 
-        #hit the wall
+        # hit the wall
         if (go_to_x, go_to_y) not in walls:
             self.goto(go_to_x, go_to_y)
+
+        if (go_to_x, go_to_y) == (monster.xcor(), monster.ycor()):
+            keepGoing = False
+            print "Monster"
 
         # Hit the door
         if (go_to_x, go_to_y) == (door.xcor(), door.ycor()):
@@ -72,7 +90,7 @@ class Player(Sprite):
         # hit a cherry
         for fruit in fruits:
             if (go_to_x, go_to_y) == fruit[1]:
-                fruit[0].goto(-1000,1000)
+                fruit[0].goto(-1000, 1000)
                 fruit[0].clear()
                 self.goto(go_to_x, go_to_y)
                 print "Cherry"
@@ -113,7 +131,7 @@ class Player(Sprite):
 
         for fruit in fruits:
             if (go_to_x, go_to_y) == fruit[1]:
-                fruit[0].goto(-1000,1000)
+                fruit[0].goto(-1000, 1000)
                 fruit[0].clear()
                 self.goto(go_to_x, go_to_y)
                 print "Cherry"
@@ -141,7 +159,7 @@ class Player(Sprite):
             t.penup()
             t.hideturtle()
             t.color("white")
-            t.setposition(width/2, 0)
+            t.setposition(width / 2, 0)
             t.write("Next Level ", move=False, align="center", font=("Arial", 20, "normal"))
             wn.tracer(0)
             time.sleep(2)
@@ -153,7 +171,7 @@ class Player(Sprite):
 
         for fruit in fruits:
             if (go_to_x, go_to_y) == fruit[1]:
-                fruit[0].goto(-1000,1000)
+                fruit[0].goto(-1000, 1000)
                 fruit[0].clear()
                 self.goto(go_to_x, go_to_y)
                 print "Cherry"
@@ -193,7 +211,7 @@ class Player(Sprite):
 
         for fruit in fruits:
             if (go_to_x, go_to_y) == fruit[1]:
-                fruit[0].goto(-1000,1000)
+                fruit[0].goto(-1000, 1000)
                 fruit[0].clear()
                 self.goto(go_to_x, go_to_y)
                 print "Cherry"
@@ -222,7 +240,7 @@ level_1 = [
     "#  #######    #    #",
     "#             # f d#",
     "#  #################",
-    "#                  #",
+    "#         m        #",
     "####  ###########  #",
     "#            #     #",
     "#            #f    #",
@@ -243,7 +261,7 @@ level_2 = [
     "#   #  d# f#   #   #",
     "#   #          #   #",
     "#   ############   #",
-    "#                  #",
+    "#         m        #",
     "####################"
 ]
 
@@ -282,6 +300,8 @@ def setup_maze(level):
             if sprite == "d":
                 door.goto(screen_x, screen_y)
                 door.stamp()
+            if sprite == "m":
+                monster.goto(screen_x, screen_y)
 
 
 def exitGame():
@@ -293,12 +313,12 @@ walls = []
 fruits = []
 wall = Sprite(wall_shape)
 door = Sprite(door_shape)
-
+monster = Sprite(monster_shape)
 
 wn.tracer(0)
 setup_maze(levels[0])
-# print(walls)
 
 keepGoing = True
 while keepGoing:
     wn.update()
+    monster.move()
