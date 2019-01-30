@@ -10,10 +10,12 @@ wall_shape = os.path.join(os.getcwd(), "wall.gif")
 fruit_shape = os.path.join(os.getcwd(), "cherry.gif")
 player_shape = os.path.join(os.getcwd(), "pacman_right.gif")
 door_shape = os.path.join(os.getcwd(), "door.gif")
+monster_shape = os.path.join(os.getcwd(), "monster.gif")
 wn.register_shape(wall_shape)
 wn.register_shape(fruit_shape)
 wn.register_shape(player_shape)
 wn.register_shape(door_shape)
+wn.register_shape(monster_shape)
 
 width = 32
 
@@ -40,6 +42,9 @@ class Player(Sprite):
     def changeShape(self, res):
         wn.register_shape(os.path.join(os.getcwd(), res))
         self.shape(os.path.join(os.getcwd(), res))
+
+    def getCounter(self):
+        return  self.counter
 
     def go_left(self):
         res = "pacman_left.gif"
@@ -167,7 +172,7 @@ class Player(Sprite):
                 t.setposition(-260, 207)
                 t.write("Score " + str(self.counter), move=False, align="center", font=("Arial", 20, "normal"))
 
-    def go_down(self):
+    def go_down(self, potential_highscore):
         res = "pacman_down.gif"
         self.changeShape(res)
         go_to_x = self.xcor()
@@ -175,6 +180,7 @@ class Player(Sprite):
         if (go_to_x, go_to_y) not in walls:
             self.goto(go_to_x, go_to_y)
 
+        # hit the door
         if (go_to_x, go_to_y) == (door.xcor(), door.ycor()):
             self.goto(go_to_x, go_to_y)
             t.undo()
@@ -189,7 +195,9 @@ class Player(Sprite):
             wn.bgcolor("black")
             del walls[:]
             del fruits[:]
-            setup_maze(levels[1])
+            print str(self.getCounter())
+            potential_highscore = self.getCounter()
+            setup_maze(levels[1], potential_highscore)
 
         for fruit in fruits:
             if (go_to_x, go_to_y) == fruit[1]:
@@ -207,6 +215,16 @@ class Player(Sprite):
                 t.setposition(-260, 207)
                 t.write("Score " + str(self.counter), move=False, align="center", font=("Arial", 20, "normal"))
 
+class Monster(Sprite):
+
+    def __init__(self, shape):
+        Sprite.__init__(self, shape)
+
+    def move(self):
+        self.forward(1)
+
+
+
 
 # Liste der Labyrinthe
 levels = []
@@ -220,7 +238,7 @@ level_1 = [
     "#######  #  #f     #",
     "#        #  #####  #",
     "#  #######    #    #",
-    "#             # f d#",
+    "#           m # f d#",
     "#  #################",
     "#                  #",
     "####  ###########  #",
@@ -238,7 +256,7 @@ level_2 = [
     "#        #  #f     #",
     "#        #     #   #",
     "#  #############   #",
-    "#              #   #",
+    "#        m     #   #",
     "#   ########   #   #",
     "#   #  d# f#   #   #",
     "#   #          #   #",
@@ -252,7 +270,8 @@ levels.append(level_2)
 
 
 # Level Setup
-def setup_maze(level):
+def setup_maze(level, potential_highscore):
+    monster = Monster(monster_shape)
     for y in range(len(level)):
         for x in range(len(level[y])):
             sprite = level[y][x]
@@ -267,13 +286,13 @@ def setup_maze(level):
                 rogue = Player(player_shape)
                 rogue.goto(screen_x, screen_y)
                 print str(screen_x) + " " + str(screen_y)
-
+                monster.move()
                 # Auf Tastaturereignisse lauschen
                 t.listen()
                 t.onkey(rogue.go_left, "Left")
-                t.onkey(rogue.go_right, "Right")
+                t.onkey(rogue.go_right,"Right")
                 t.onkey(rogue.go_up, "Up")
-                t.onkey(rogue.go_down, "Down")
+                t.onkey(rogue.go_down(potential_highscore), "Down")
                 t.onkey(exitGame, "Escape")  # Escape beendet das Spiel
             if sprite == "f":
                 fruit = Sprite(fruit_shape)
@@ -283,6 +302,15 @@ def setup_maze(level):
             if sprite == "d":
                 door.goto(screen_x, screen_y)
                 door.stamp()
+            if sprite == "m":
+                monster.goto(screen_x, screen_y)
+                print str(monster.pos())
+                monster.move()
+                monster.move()
+                print str(monster.pos())
+
+
+
 
 
 def exitGame():
@@ -297,8 +325,13 @@ door = Sprite(door_shape)
 
 
 wn.tracer(0)
-setup_maze(levels[0])
-# print(walls)
+# bisherigen Highscore auslesen
+with open("highscore.txt") as highscoreContainer:
+    highscore = highscoreContainer.read().decode("utf-8")
+print "highscore "+highscore
+potential_highscore = 0
+setup_maze(levels[0], potential_highscore)
+
 
 keepGoing = True
 while keepGoing:
