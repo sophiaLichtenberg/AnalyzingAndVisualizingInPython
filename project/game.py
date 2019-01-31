@@ -6,9 +6,15 @@ wn = t.Screen()
 wn.bgcolor("black")
 wn.setup(640, 480)
 
+score_label = t.Turtle()
+nextLevel_label = t.Turtle()
+
+score_label.hideturtle()
+nextLevel_label.hideturtle()
+
 score = 0
 level_counter = 0
-
+width = 32
 
 wall_shape = os.path.join(os.getcwd(), "wall.gif")
 fruit_shape = os.path.join(os.getcwd(), "cherry.gif")
@@ -21,8 +27,8 @@ wn.register_shape(player_shape)
 wn.register_shape(door_shape)
 wn.register_shape(monster_shape)
 
-width = 32
 
+# Monster class
 
 class Monster(t.Turtle):
     go_left = False
@@ -41,17 +47,16 @@ class Monster(t.Turtle):
                     if self.xcor() + width + 1 < current_wall[0]:
                         self.forward(1)
                     elif self.xcor() + width + 1 == current_wall[0]:
-                        self.go_left = True
+                        self.go_left = True  # turtle change direction
                         self.go_right = False
-                        self.left(180)
+                        self.left(180)  # turtle turn around
                 if self.go_left and current_wall[0] < 0:
                     if self.xcor() > current_wall[0] + width - 1:
-                        # self.goto(self.xcor() - 1, self.ycor())
                         self.forward(1)
                     elif self.xcor() == current_wall[0] + width - 1:
-                        self.go_left = False
+                        self.go_left = False  # turtle change direction
                         self.go_right = True
-                        self.left(180)
+                        self.left(180)  # turtle turn around
 
     def checkCollision(self, player):
         global keepGoing
@@ -66,9 +71,8 @@ class Monster(t.Turtle):
                 endGame()
 
 
-# Die Mauern des Labyrinths
-
-class Sprite(t.Turtle):
+# Walls and Fruits of the game
+class Component(t.Turtle):
     def __init__(self, shape):
         t.Turtle.__init__(self)
         self.shape(shape)
@@ -76,10 +80,10 @@ class Sprite(t.Turtle):
         self.speed(0)
 
 
-class Player(Sprite):
+class Player(Component):
 
     def __init__(self, shape):
-        Sprite.__init__(self, shape)
+        Component.__init__(self, shape)
 
     def changeShape(self, res):
         wn.register_shape(os.path.join(os.getcwd(), res))
@@ -88,12 +92,12 @@ class Player(Sprite):
     @staticmethod
     def next_level():
         global level_counter
-        t.undo()
-        t.penup()
-        t.hideturtle()
-        t.color("white")
-        t.setposition(width / 2, 0)
-        t.write("Next Level ", move=False, align="center", font=("Arial", 20, "normal"))
+        nextLevel_label.undo()
+        nextLevel_label.penup()
+        nextLevel_label.hideturtle()
+        nextLevel_label.color("white")
+        nextLevel_label.setposition(width / 2, 0)
+        nextLevel_label.write("Next Level ", move=False, align="center", font=("Arial", 20, "normal"))
         wn.tracer(0)
         time.sleep(2)
         wn.clear()
@@ -101,7 +105,7 @@ class Player(Sprite):
         del walls[:]
         del fruits[:]
         level_counter += 1
-        setup_maze()
+        init_level()
 
     @staticmethod
     def collect_fruit(fruit):
@@ -110,12 +114,12 @@ class Player(Sprite):
         fruit[0].clear()
         fruits.remove(fruit)
         score += 1
-        t.undo()
-        t.penup()
-        t.hideturtle()
-        t.color("white")
-        t.setposition(-260, 207)
-        t.write("Score " + str(score), move=False, align="center", font=("Arial", 20, "normal"))
+        score_label.undo()
+        score_label.penup()
+        score_label.hideturtle()
+        score_label.color("white")
+        score_label.setposition(-260, 207)
+        score_label.write("Score " + str(score), move=False, align="center", font=("Arial", 20, "normal"))
 
     def go_left(self):
         res = "pacman_left.gif"
@@ -194,12 +198,12 @@ class Player(Sprite):
                 self.collect_fruit(fruit)
 
 
-# List of Labyrinth
+# List of Level
 levels = []
 
 level_1 = [
     "####################",
-    "# @#ff             #",
+    "# p#ff             #",
     "#  #######  #####  #",
     "#        #  #f     #",
     "# f      #  #####  #",
@@ -214,10 +218,9 @@ level_1 = [
     "#            #f    #",
     "####################"
 ]
-
 level_2 = [
     "####################",
-    "#ff#ff  #f  #   @  #",
+    "#ff#ff  #f  #   p  #",
     "#  # #####  #  #####",
     "#  #     #  #      #",
     "#  ####  #  ####   #",
@@ -232,10 +235,9 @@ level_2 = [
     "#         m        #",
     "####################"
 ]
-
 level_3 = [
     "####################",
-    "#@       # d#     f#",
+    "#p       # d#     f#",
     "#### #####  #  #####",
     "# f#     #  #     f#",
     "# f####  #  #     f#",
@@ -257,7 +259,7 @@ levels.append(level_3)
 
 
 # Level Setup
-def setup_maze():
+def init_level():
     global level_counter
     global keepGoing
 
@@ -274,15 +276,15 @@ def setup_maze():
 def setup_level(level):
     for y in range(len(level)):
         for x in range(len(level[y])):
-            sprite = level[y][x]
+            symbol = level[y][x]
             screen_x = -308 + (x * width)
             screen_y = 224 - (y * width)
 
-            if sprite == "#":
+            if symbol == "#":
                 wall.goto(screen_x, screen_y)
                 walls.append((screen_x, screen_y))
                 wall.stamp()
-            if sprite == "@":
+            if symbol == "p":
                 player = Player(player_shape)
                 player.goto(screen_x, screen_y)
 
@@ -293,17 +295,18 @@ def setup_level(level):
                 t.onkey(player.go_up, "Up")
                 t.onkey(player.go_down, "Down")
                 t.onkey(exitGame, "Escape")  # Escape beendet das Spiel
-            if sprite == "f":
-                fruit = Sprite(fruit_shape)
+            if symbol == "f":
+                fruit = Component(fruit_shape)
                 fruit.goto(screen_x, screen_y)
                 fruits.append([fruit, (screen_x, screen_y)])
                 fruit.stamp()
-            if sprite == "d":
+            if symbol == "d":
                 door.goto(screen_x, screen_y)
                 door.stamp()
-            if sprite == "m":
+            if symbol == "m":
                 monster = Monster(monster_shape)
                 monster.goto(screen_x, screen_y)
+
     while keepGoing:
         wn.update()
         monster.move()
@@ -319,29 +322,30 @@ def endGame():
     print "End game"
     wn.clear()
     wn.bgcolor("black")
-    t.undo()
-    t.penup()
-    t.hideturtle()
-    t.color("white")
-    t.write("END", move=False, align="center", font=("Arial", 20, "normal"))
+    nextLevel_label.undo()
+    nextLevel_label.penup()
+    nextLevel_label.hideturtle()
+    nextLevel_label.color("white")
+    nextLevel_label.write("END", move=False, align="center", font=("Arial", 20, "normal"))
     # bisherigen Highscore auslesen
-    #with open("highscore.txt") as highscoreContainer:
-     #   highscore = highscoreContainer.readline()
-    #print "highscore " + highscore
-    #print type(highscore)
-    #highscoreContainer.close()
+    # with open("highscore.txt") as highscoreContainer:
+    #   highscore = highscoreContainer.readline()
+    # print "highscore " + highscore
+    # print type(highscore)
+    # highscoreContainer.close()
 
-    #if score > float(highscore):
-     #   f = open("highscore.txt", "w")
-      #  f.write(str(score))
+    # if score > float(highscore):
+    #   f = open("highscore.txt", "w")
+    #  f.write(str(score))
 
 
 walls = []
 fruits = []
-wall = Sprite(wall_shape)
-door = Sprite(door_shape)
+wall = Component(wall_shape)
+door = Component(door_shape)
+
 
 wn.tracer(0)
 keepGoing = True
 
-setup_maze()
+init_level()
