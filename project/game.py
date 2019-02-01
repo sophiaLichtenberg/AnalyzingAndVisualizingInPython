@@ -67,8 +67,8 @@ class Monster(t.Turtle):
 
         if py == my:
             if px <= mx + width and px + width >= mx:
-                print 'hit'
                 endGame()
+                self.goto(-1000, -1000)
 
 
 # Walls and Fruits of the game
@@ -85,10 +85,12 @@ class Player(Component):
     def __init__(self, shape):
         Component.__init__(self, shape)
 
+    # method to replace the Shape Img
     def changeShape(self, res):
         wn.register_shape(os.path.join(os.getcwd(), res))
         self.shape(os.path.join(os.getcwd(), res))
 
+    # method to get to next Level
     @staticmethod
     def next_level():
         global level_counter
@@ -102,19 +104,19 @@ class Player(Component):
         time.sleep(2)
         wn.clear()
         wn.bgcolor("black")
-        del walls[:]
+        del walls[:]                # empty the Walls and Fruits Array --> will be refilled in setup_level
         del fruits[:]
-        level_counter += 1
+        level_counter += 1          # count up for next Level
         init_level()
 
     @staticmethod
     def collect_fruit(fruit):
         global score
-        fruit[0].goto(-1000, 1000)
+        fruit[0].goto(-1000, 1000)  # put fruit out of Screen and clear, bc delete Turtle not possbile
         fruit[0].clear()
-        fruits.remove(fruit)
-        score += 1
-        score_label.undo()
+        fruits.remove(fruit)        # remove from Array of fruits, so Play won't recognize again
+        score += 1                  # count up the global Var Score
+        score_label.undo()          # rewrite the Score Label-Turtle
         score_label.penup()
         score_label.hideturtle()
         score_label.color("white")
@@ -122,8 +124,7 @@ class Player(Component):
         score_label.write("Score " + str(score), move=False, align="center", font=("Arial", 20, "normal"))
 
     def go_left(self):
-        res = "pacman_left.gif"
-        self.changeShape(res)
+        self.changeShape("pacman_left.gif")
 
         go_to_x = self.xcor() - width
         go_to_y = self.ycor()
@@ -144,8 +145,7 @@ class Player(Component):
                 self.collect_fruit(fruit)
 
     def go_right(self):
-        res = "pacman_right.gif"
-        self.changeShape(res)
+        self.changeShape("pacman_right.gif")
 
         go_to_x = self.xcor() + width
         go_to_y = self.ycor()
@@ -163,8 +163,7 @@ class Player(Component):
                 self.collect_fruit(fruit)
 
     def go_up(self):
-        res = "pacman_up.gif"
-        self.changeShape(res)
+        self.changeShape("pacman_up.gif")
         go_to_x = self.xcor()
         go_to_y = self.ycor() + width
         if (go_to_x, go_to_y) not in walls:
@@ -180,8 +179,7 @@ class Player(Component):
                 self.collect_fruit(fruit)
 
     def go_down(self):
-        res = "pacman_down.gif"
-        self.changeShape(res)
+        self.changeShape("pacman_down.gif")
         go_to_x = self.xcor()
         go_to_y = self.ycor() - width
         if (go_to_x, go_to_y) not in walls:
@@ -200,7 +198,7 @@ class Player(Component):
 
 # List of Level
 levels = []
-
+# two dimensional Array for the Level Design
 level_1 = [
     "####################",
     "# p#ff             #",
@@ -274,6 +272,7 @@ def init_level():
 
 
 def setup_level(level):
+    # iterate over the levels Array for y-coordinate and x-coordinate
     for y in range(len(level)):
         for x in range(len(level[y])):
             symbol = level[y][x]
@@ -288,7 +287,7 @@ def setup_level(level):
                 player = Player(player_shape)
                 player.goto(screen_x, screen_y)
 
-                # Auf Tastaturereignisse lauschen
+                # listen to player key events
                 t.listen()
                 t.onkey(player.go_left, "Left")
                 t.onkey(player.go_right, "Right")
