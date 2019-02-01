@@ -94,6 +94,7 @@ class Player(Component):
     @staticmethod
     def next_level():
         global level_counter
+        global level_stop
         nextLevel_label.undo()
         nextLevel_label.penup()
         nextLevel_label.hideturtle()
@@ -107,7 +108,11 @@ class Player(Component):
         del walls[:]                # empty the Walls and Fruits Array --> will be refilled in setup_level
         del fruits[:]
         level_counter += 1          # count up for next Level
+        level_stop = True
+        level_stop = False
         init_level()
+
+
 
     @staticmethod
     def collect_fruit(fruit):
@@ -201,12 +206,12 @@ levels = []
 # two dimensional Array for the Level Design
 level_1 = [
     "####################",
-    "# p#ff             #",
+    "#  #ff             #",
     "#  #######  #####  #",
     "#        #  #f     #",
     "# f      #  #####  #",
     "#######  #  #f     #",
-    "#        #  #####  #",
+    "#        #  ##### p#",
     "#  #######    #    #",
     "#             # f d#",
     "#  #################",
@@ -272,6 +277,8 @@ def init_level():
 
 
 def setup_level(level):
+    global score
+    global level_stop
     # iterate over the levels Array for y-coordinate and x-coordinate
     for y in range(len(level)):
         for x in range(len(level[y])):
@@ -305,11 +312,20 @@ def setup_level(level):
             if symbol == "m":
                 monster = Monster(monster_shape)
                 monster.goto(screen_x, screen_y)
+    score_label.penup()
+    score_label.hideturtle()
+    score_label.color("white")
+    score_label.setposition(-260, 207)
+    score_label.write("Score " + str(score), move=False, align="center", font=("Arial", 20, "normal"))
 
     while keepGoing:
         wn.update()
         monster.move()
         monster.checkCollision(player)
+        print str(monster.pos())
+        if level_stop:
+            print "bla"
+            break
 
 
 def exitGame():
@@ -346,5 +362,6 @@ door = Component(door_shape)
 
 wn.tracer(0)
 keepGoing = True
+level_stop = False
 
 init_level()
