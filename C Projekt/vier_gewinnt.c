@@ -105,13 +105,12 @@ int main (void)
 
   cout <<"      C o l s      \n";
   cout <<"      0 1 2 3 4 5 6\n";
-  cout <<"      | | | | | | |\n";
-  cout <<" R 0- _ _ _ _ _ _ _\n";
-  cout <<" o 1- _ _ _ _ _ _ _\n";
-  cout <<" w 2- _ _ _ _ _ _ _\n";
-  cout <<" s 3- _ _ _ _ _ _ _\n";
-  cout <<"   4- _ _ _ _ _ _ _\n";
-  cout <<"   5- _ _ _ _ _ _ _\n\n";
+  cout <<" R 0  _ _ _ _ _ _ _\n";
+  cout <<" o 1  _ _ _ _ _ _ _\n";
+  cout <<" w 2  _ _ _ _ _ _ _\n";
+  cout <<" s 3  _ _ _ _ _ _ _\n";
+  cout <<"   4  _ _ _ _ _ _ _\n";
+  cout <<"   5  _ _ _ _ _ _ _\n\n";
 
   turn(gameBoard, 1);
   
