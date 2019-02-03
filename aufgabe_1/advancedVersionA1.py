@@ -1,4 +1,4 @@
-counter = 1
+score = 1
 grades = []
 sum
 
@@ -39,7 +39,7 @@ def calcMedian(grades):
 
 def checkIfReadyToCalc():
     global sum
-    global counter
+    global score
     global grades
     print "Jetzt berechnen ? (y/n)"
     answer = raw_input()
@@ -62,7 +62,7 @@ def checkIfReadyToCalc():
 
 def start(input):
     global sum
-    global counter
+    global score
     global grades
     while input != "":
         counter = counter + 1
@@ -78,7 +78,7 @@ def start(input):
 # Start of program
 
 print "Gib Deine Noten gefolgt von Return ein. Lass die Eingabe leer, um zu beenden."
-print str(counter) + ". Note: "
+print str(score) + ". Note: "
 input = checkInput(raw_input())
 grades.append(input)
 sum = float(input)

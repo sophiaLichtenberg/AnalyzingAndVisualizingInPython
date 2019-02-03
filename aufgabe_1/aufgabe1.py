@@ -1,13 +1,13 @@
 print "Gib Deine Noten gefolgt von Return ein. Lass die Eingabe leer, um zu beenden."
-counter = 1
-print str(counter) + ". Note: "
+score = 1
+print str(score) + ". Note: "
 input = raw_input()
 grades = []
 grades.append(input)
 sum = float(input)
 while input != "":
-    counter = counter + 1
-    print str(counter) + ". Note: "
+    score = score + 1
+    print str(score) + ". Note: "
     input = raw_input()
     if input != "":
         grades.append(input)
