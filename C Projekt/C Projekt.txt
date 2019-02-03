@@ -1,6 +1,121 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+void printHangman(int numberWrongLetters) {
+ switch (numberWrongLetters) {
+     case 0 :
+      printf("Anzahl falscher Buchstaben: %d\n\n", numberWrongLetters);
+      printf("\n");
+      printf("\n");
+      printf("\n");
+      printf("\n");
+      printf("\n");
+      printf("\n");
+      printf("____________\n\n");
+     break;
+     case 1 :
+      printf("Anzahl falscher Buchstaben: %d\n\n", numberWrongLetters);
+      printf("\n");
+      printf("  |\n");
+      printf("  |\n");
+      printf("  |\n");
+      printf("  |\n");
+      printf("  |\n");
+      printf("__|_________\n\n");
+     break;
+     case 2 :
+      printf("Anzahl falscher Buchstaben: %d\n\n", numberWrongLetters);
+      printf("  _______\n");
+      printf("  |\n");
+      printf("  |\n");
+      printf("  |\n");
+      printf("  |\n");
+      printf("  |\n");
+      printf("__|_________\n\n");
+     break;
+     case 3 :
+      printf("Anzahl falscher Buchstaben: %d\n\n", numberWrongLetters);
+      printf("  _______\n");
+      printf("  |/\n");
+      printf("  |\n");
+      printf("  |\n");
+      printf("  |\n");
+      printf("  |\n");
+      printf("__|_________\n\n");
+     break;
+     case 4 :
+      printf("Anzahl falscher Buchstaben: %d\n\n", numberWrongLetters);
+      printf("  _______\n");
+      printf("  |/   | \n");
+      printf("  |    O \n");
+      printf("  |\n");
+      printf("  |\n");
+      printf("  |\n");
+      printf("__|_________\n\n");
+     break;
+     case 5 :
+      printf("Anzahl falscher Buchstaben: %d\n\n", numberWrongLetters);
+      printf("  _______\n");
+      printf("  |/   | \n");
+      printf("  |    O \n");
+      printf("  |    |\n");
+      printf("  |    |\n");
+      printf("  |\n");
+      printf("__|_________\n\n");
+     break;
+     case 6 :
+      printf("Anzahl falscher Buchstaben: %d\n\n", numberWrongLetters);
+      printf("  _______\n");
+      printf("  |/   | \n");
+      printf("  |    O \n");
+      printf("  |   \\|\n");
+      printf("  |    | \n");
+      printf("  |\n");
+      printf("__|_________\n\n");
+     break;
+     case 7 :
+      printf("Anzahl falscher Buchstaben: %d\n\n", numberWrongLetters);
+      printf("  _______\n");
+      printf("  |/   | \n");
+      printf("  |    O \n");
+      printf("  |   \\|/\n");
+      printf("  |    | \n");
+      printf("  |\n");
+      printf("__|_________\n\n");
+     break;
+     case 8 :
+      printf("Anzahl falscher Buchstaben: %d\n\n", numberWrongLetters);
+      printf("  _______\n");
+      printf("  |/   | \n");
+      printf("  |    O \n");
+      printf("  |   \\|/\n");
+      printf("  |    | \n");
+      printf("  |   /\n");
+      printf("__|_________\n\n");
+     break;
+     case 9 :
+      printf("Anzahl falscher Buchstaben: %d\n\n", numberWrongLetters);
+      printf("  _______\n");
+      printf("  |/   | \n");
+      printf("  |    O \n");
+      printf("  |   \\|/\n");
+      printf("  |    | \n");
+      printf("  |   / \\\n");
+      printf("__|_________\n\n");
+     break;
+     case 10 :
+      printf("Anzahl falscher Buchstaben: %d\n\n", numberWrongLetters);
+      printf("  _______\n");
+      printf("  |/   | \n");
+      printf("  |    X \n");
+      printf("  |   \\|/\n");
+      printf("  |    | \n");
+      printf("  |   / \\\n");
+      printf("__|_________\n\n");
+     break;
+ }
+}
+
 int main (void)
 {
 
@@ -8,8 +123,9 @@ int main (void)
   char alreadyGuessed[] = "_____";
   char gameRunning = 'T';	// T steht fuer True
   char inputCharacter;
+  int amoutWrongLetters = 0;
   
-  // Ablauf für aller ersten Eingabebuchstaben
+  // Ablauf fC<r aller ersten Eingabebuchstaben
   printf ("Geben Sie einen Buchstaben ein:\n");
   scanf ("%c", &inputCharacter);
   printf ("Eingabebuchstabe %c\n", inputCharacter);
@@ -23,11 +139,13 @@ int main (void)
      // Buchstabe ist nicht enthalten
     if (strchr (alreadyGuessed, inputCharacter) == NULL)	{
         printf("Der Buchstabe ist nicht im zu erratenden Wort enthalten.\n");
+        amoutWrongLetters += 1;
 	}
     printf ("Aktueller Spielstand: %s \n", alreadyGuessed);
+    printHangman(amoutWrongLetters);
+
     
-    
-// Ablauf für alle restlichen Eingabebuchstaben
+// Ablauf fC<r alle restlichen Eingabebuchstaben
   while(gameRunning == 'T'){
       
     printf ("Geben Sie einen Buchstaben ein:\n");
@@ -44,12 +162,13 @@ int main (void)
     // Buchstabe ist nicht enthalten
     if (strchr (alreadyGuessed, inputCharacter) == NULL)	{
         printf("Der Buchstabe ist nicht im zu erratenden Wort enthalten.\n");
-
+        amoutWrongLetters += 1;
 	}
     printf ("Aktueller Spielstand: %s \n", alreadyGuessed);
     if (strchr (alreadyGuessed, '_') == NULL)	{
 	    gameRunning = 'F';
 	}
+	printHangman(amoutWrongLetters);
     }
     printf("Das Spiel ist zu Ende!");
 
