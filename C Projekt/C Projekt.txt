@@ -1,5 +1,9 @@
 #include <stdio.h>
+#include <fstream>
+#include <string.h>
+#include <iostream>
 #include <stdbool.h>
+using namespace std;
 
 void printHangman(int numberWrongLetters) {
  switch (numberWrongLetters) {
@@ -116,61 +120,83 @@ void printHangman(int numberWrongLetters) {
  }
 }
 
+void append(char* s, char c) {
+        int len = strlen(s);
+        s[len] = c;
+        s[len+1] = '\0';
+}
+
+void readFile() {
+    ifstream file;
+    file.open ("woerter.txt");
+    if (!file.is_open()) return;
+
+    string word;
+    while (file >> word){
+        cout<< word << '\n';
+    }
+}
+
 int main (void)
 {
-
-  char wordToGuess[] = "Hallo";
-  char alreadyGuessed[] = "_____";
-  char gameRunning = 'T';	// T steht fuer True
+  readFile();
+  char wordToGuess[] = "Beispiel";
+  char alreadyGuessed[sizeof(wordToGuess)] = "\0";
+  char gameRunning = true;
   char inputCharacter;
-  int amoutWrongLetters = 0;
-  
-  // Ablauf fC<r aller ersten Eingabebuchstaben
-  printf ("Geben Sie einen Buchstaben ein:\n");
-  scanf ("%c", &inputCharacter);
-  printf ("Eingabebuchstabe %c\n", inputCharacter);
+  int amountWrongLetters = 0;
+
+  for (int i = 1; i < sizeof(wordToGuess); i++){
+    append(alreadyGuessed, '_');
+  }
+
+  // Ablauf fC<r aller ersten Eingaabebuchstaben
+  cout << "Geben Sie einen Buchstaben ein: " << '\n';
+  cin >> inputCharacter;
+  cout << "Eingabebuchstabe " << inputCharacter << '\n';
   // alle erratenen Buchstaben einsetzen
     for (int i = 0; i < sizeof (wordToGuess); i++){
 	    if (wordToGuess[i] == inputCharacter) {
-	        printf ("Buchstabe ist enthalten\n");
+	        cout << "Buchstabe ist enthalten" << '\n';
 	        alreadyGuessed[i] = inputCharacter;
 	    }
     }
      // Buchstabe ist nicht enthalten
     if (strchr (alreadyGuessed, inputCharacter) == NULL)	{
-        printf("Der Buchstabe ist nicht im zu erratenden Wort enthalten.\n");
-        amoutWrongLetters += 1;
+        cout << "Der Buchstabe ist nicht im zu erratenden Wort enthalten." << '\n';
+        amountWrongLetters += 1;
 	}
-    printf ("Aktueller Spielstand: %s \n", alreadyGuessed);
-    printHangman(amoutWrongLetters);
-
+    cout << "Aktueller Spielstand: " << alreadyGuessed << '\n';
+    printHangman(amountWrongLetters);
+    
     
 // Ablauf fC<r alle restlichen Eingabebuchstaben
-  while(gameRunning == 'T'){
+  while(gameRunning == true){
       
-    printf ("Geben Sie einen Buchstaben ein:\n");
-    scanf (" %c", &inputCharacter);
+    cout << "Geben Sie einen Buchstaben ein: " << '\n';
+    cin >> inputCharacter;
 
 // alle erratenen Buchstaben einsetzen
     for (int i = 0; i < sizeof (wordToGuess); i++){
 	    if (wordToGuess[i] == inputCharacter) {
-	        printf ("Buchstabe ist enthalten\n");
+	        cout << "Buchstabe ist enthalten" << '\n';
 	        alreadyGuessed[i] = inputCharacter;
 	    }
     }
     
     // Buchstabe ist nicht enthalten
     if (strchr (alreadyGuessed, inputCharacter) == NULL)	{
-        printf("Der Buchstabe ist nicht im zu erratenden Wort enthalten.\n");
-        amoutWrongLetters += 1;
+        cout << "Der Buchstabe ist nicht im zu erratenden Wort enthalten." << '\n';
+        amountWrongLetters += 1;
+
 	}
-    printf ("Aktueller Spielstand: %s \n", alreadyGuessed);
+    cout << "Aktueller Spielstand: " << alreadyGuessed << '\n';
     if (strchr (alreadyGuessed, '_') == NULL)	{
-	    gameRunning = 'F';
+	    gameRunning = false;
 	}
-	printHangman(amoutWrongLetters);
+	printHangman(amountWrongLetters);
     }
-    printf("Das Spiel ist zu Ende!");
+    cout << "Das Spiel ist zu Ende!" << '\n';
 
 
 
