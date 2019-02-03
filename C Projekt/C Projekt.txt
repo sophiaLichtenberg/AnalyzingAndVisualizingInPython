@@ -9,7 +9,7 @@ int main (void)
   char gameRunning = 'T';	// T steht fuer True
   char inputCharacter;
   
-  // Ablauf fÃ¼r aller ersten Eingabebuchstaben
+  // Ablauf für aller ersten Eingabebuchstaben
   printf ("Geben Sie einen Buchstaben ein:\n");
   scanf ("%c", &inputCharacter);
   printf ("Eingabebuchstabe %c\n", inputCharacter);
@@ -27,7 +27,7 @@ int main (void)
     printf ("Aktueller Spielstand: %s \n", alreadyGuessed);
     
     
-// Ablauf fÃ¼r alle restlichen Eingabebuchstaben
+// Ablauf für alle restlichen Eingabebuchstaben
   while(gameRunning == 'T'){
       
     printf ("Geben Sie einen Buchstaben ein:\n");
