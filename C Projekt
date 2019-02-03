@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+int main (void)
+{
+
+  char wordToGuess[] = "Hallo";
+  char alreadyGuessed[] = "_____";
+  char gameRunning = 'T';	// T steht fuer True
+  char inputCharacter;
+  
+  // Ablauf für aller ersten Eingabebuchstaben
+  printf ("Geben Sie einen Buchstaben ein:\n");
+  scanf ("%c", &inputCharacter);
+  printf ("Eingabebuchstabe %c\n", inputCharacter);
+  // alle erratenen Buchstaben einsetzen
+    for (int i = 0; i < sizeof (wordToGuess); i++){
+	    if (wordToGuess[i] == inputCharacter) {
+	        printf ("Buchstabe ist enthalten\n");
+	        alreadyGuessed[i] = inputCharacter;
+	    }
+    }
+     // Buchstabe ist nicht enthalten
+    if (strchr (alreadyGuessed, inputCharacter) == NULL)	{
+        printf("Der Buchstabe ist nicht im zu erratenden Wort enthalten.\n");
+	}
+    printf ("Aktueller Spielstand: %s \n", alreadyGuessed);
+    
+    
+// Ablauf für alle restlichen Eingabebuchstaben
+  while(gameRunning == 'T'){
+      
+    printf ("Geben Sie einen Buchstaben ein:\n");
+    scanf (" %c", &inputCharacter);
+
+// alle erratenen Buchstaben einsetzen
+    for (int i = 0; i < sizeof (wordToGuess); i++){
+	    if (wordToGuess[i] == inputCharacter) {
+	        printf ("Buchstabe ist enthalten\n");
+	        alreadyGuessed[i] = inputCharacter;
+	    }
+    }
+    
+    // Buchstabe ist nicht enthalten
+    if (strchr (alreadyGuessed, inputCharacter) == NULL)	{
+        printf("Der Buchstabe ist nicht im zu erratenden Wort enthalten.\n");
+
+	}
+    printf ("Aktueller Spielstand: %s \n", alreadyGuessed);
+    if (strchr (alreadyGuessed, '_') == NULL)	{
+	    gameRunning = 'F';
+	}
+    }
+    printf("Das Spiel ist zu Ende!");
+
+
+
+}
