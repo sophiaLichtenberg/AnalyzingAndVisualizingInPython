@@ -116,29 +116,8 @@ int main (void)
   cout <<"   4- _ _ _ _ _ _ _\n";
   cout <<"   5- _ _ _ _ _ _ _\n\n";
 
-  cout << "\nPlayer 1 turn (x): \nRow: ";
-  cin >> userRow;
-  cout << "Col: ";
-  cin >> userCol;
-
-
-  if (userRow < rows && userCol < cols){
-      if(gameBoard[userRow][userCol] == '_') {
-        cout << "Set at Position -> " << "(" << userRow << ", " << userCol << ")\n\n";
-        gameBoard[userRow][userCol] = 'x';
-      } else {
-        cout << "You can't do this turn";
-      }
-  }
-
-  for (x = 0; x < rows; x++){
-    cout << "     ";
-    for (y = 0; y < cols; y++){
-      cout <<  gameBoard [x][y] << " ";
-    }
-    cout << '\n';
-  }
-
+  turn(gameBoard, 1);
+  
   while(gameRunning == true){
 
     if (player_1){
