@@ -152,9 +152,16 @@ int main (void)
     
     // Spielablauf
     while(gameRunning == true){
-      
-    cout << "Geben Sie einen Buchstaben ein: " << '\n';
-    cin >> inputCharacter;
+        
+        cout << "Geben Sie einen Buchstaben ein: " << '\n';
+        cin >> inputCharacter;
+        
+        // User Input Errors handeln
+        while(!isalpha(inputCharacter)){// kein Buchstabe, sondern anderes Zeichen eingegeben
+             printf("Sie muessen einen Buchstaben eingeben! \n"); 
+             cout << "Geben Sie einen Buchstaben ein: " << '\n';
+             cin >> inputCharacter;
+        }
 
 // alle erratenen Buchstaben einsetzen
     for (int i = 0; i < sizeof (wordToGuess); i++){
