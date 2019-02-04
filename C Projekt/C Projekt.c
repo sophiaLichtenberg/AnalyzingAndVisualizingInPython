@@ -149,55 +149,38 @@ int main (void)
   for (int i = 1; i < sizeof(wordToGuess); i++){
     append(alreadyGuessed, '_');
   }
-
-  // Ablauf fC<r aller ersten Eingaabebuchstaben
-  cout << "Geben Sie einen Buchstaben ein: " << '\n';
-  cin >> inputCharacter;
-  cout << "Eingabebuchstabe " << inputCharacter << '\n';
-  // alle erratenen Buchstaben einsetzen
-    for (int i = 0; i < sizeof (wordToGuess); i++){
-	    if (wordToGuess[i] == inputCharacter) {
-	        cout << "Buchstabe ist enthalten" << '\n';
-	        alreadyGuessed[i] = inputCharacter;
-	    }
-    }
-     // Buchstabe ist nicht enthalten
-    if (strchr (alreadyGuessed, inputCharacter) == NULL)	{
-        cout << "Der Buchstabe ist nicht im zu erratenden Wort enthalten." << '\n';
-        amountWrongLetters += 1;
-	}
-    cout << "Aktueller Spielstand: " << alreadyGuessed << '\n';
-    printHangman(amountWrongLetters);
     
-    
-// Ablauf fC<r alle restlichen Eingabebuchstaben
-  while(gameRunning == true){
+    // Spielablauf
+    while(gameRunning == true){
       
     cout << "Geben Sie einen Buchstaben ein: " << '\n';
     cin >> inputCharacter;
 
 // alle erratenen Buchstaben einsetzen
     for (int i = 0; i < sizeof (wordToGuess); i++){
-	    if (wordToGuess[i] == inputCharacter) {
+	    if (tolower(wordToGuess[i]) == tolower(inputCharacter)) {
 	        cout << "Buchstabe ist enthalten" << '\n';
-	        alreadyGuessed[i] = inputCharacter;
+	        alreadyGuessed[i] = wordToGuess[i];
 	    }
     }
     
     // Buchstabe ist nicht enthalten
-    if (strchr (alreadyGuessed, inputCharacter) == NULL)	{
+    if ((strchr (alreadyGuessed, tolower(inputCharacter)) == NULL)&&(strchr (alreadyGuessed, toupper(inputCharacter)) == NULL))	{
         cout << "Der Buchstabe ist nicht im zu erratenden Wort enthalten." << '\n';
         amountWrongLetters += 1;
-
 	}
     cout << "Aktueller Spielstand: " << alreadyGuessed << '\n';
+    // Hangman darstellen
+    printHangman(amountWrongLetters);
+    // falls alle Buchstaben erraten wurden, dann hat der Spieler gewonnen
     if (strchr (alreadyGuessed, '_') == NULL)	{
 	    gameRunning = false;
+	    cout << "Sie haben gewonnen!" << '\n';
 	}
-	printHangman(amountWrongLetters);
+	// Spieler hat verloren, wenn 10 Buchstaben falsch geraten hat
+	if (amountWrongLetters>= 10)	{
+	    gameRunning = false;
+	    cout << "Sie haben verloren!" << '\n';
+	}
     }
-    cout << "Das Spiel ist zu Ende!" << '\n';
-
-
-
 }
