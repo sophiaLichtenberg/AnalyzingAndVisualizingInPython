@@ -20,102 +20,102 @@ void printHangman(int numberWrongLetters) {
      case 1 :
       cout << "Anzahl falscher Buchstaben: " << numberWrongLetters << "\n\n";
       cout << "\n";
-      cout << " |\n";
-      cout << " |\n";
-      cout << " |\n";
-      cout << " |\n";
-      cout << " |\n";
-      cout << "_|__________\n\n";
+      cout << "  |\n";
+      cout << "  |\n";
+      cout << "  |\n";
+      cout << "  |\n";
+      cout << "  |\n";
+      cout << " _|__________\n\n";
      break;
      case 2 :
       cout << "Anzahl falscher Buchstaben: " << numberWrongLetters << "\n\n";
-      cout << " _______\n";
-      cout << " |\n";
-      cout << " |\n";
-      cout << " |\n";
-      cout << " |\n";
-      cout << " |\n";
-      cout << "_|__________\n\n";
+      cout << "  _______\n";
+      cout << "  |\n";
+      cout << "  |\n";
+      cout << "  |\n";
+      cout << "  |\n";
+      cout << "  |\n";
+      cout << " _|__________\n\n";
      break;
      case 3 :
       cout << "Anzahl falscher Buchstaben: " << numberWrongLetters << "\n\n";
-      cout << " _______\n";
-      cout << " |/\n";
-      cout << " |\n";
-      cout << " |\n";
-      cout << " |\n";
-      cout << " |\n";
-      cout << "_|__________\n\n";
+      cout << "  _______\n";
+      cout << "  |/\n";
+      cout << "  |\n";
+      cout << "  |\n";
+      cout << "  |\n";
+      cout << "  |\n";
+      cout << " _|__________\n\n";
      break;
      case 4 :
       cout << "Anzahl falscher Buchstaben: " << numberWrongLetters << "\n\n";
-      cout << " _______\n";
-      cout << " |/   | \n";
-      cout << " |    O \n";
-      cout << " |\n";
-      cout << " |\n";
-      cout << " |\n";
-      cout << "_|__________\n\n";
+      cout << "  _______\n";
+      cout << "  |/   | \n";
+      cout << "  |    O \n";
+      cout << "  |\n";
+      cout << "  |\n";
+      cout << "  |\n";
+      cout << " _|__________\n\n";
      break;
      case 5 :
       cout << "Anzahl falscher Buchstaben: " << numberWrongLetters << "\n\n";
-      cout << " _______\n";
-      cout << " |/   | \n";
-      cout << " |    O \n";
-      cout << " |    |\n";
-      cout << " |    | \n";
-      cout << " |\n";
-      cout << "_|__________\n\n";
+      cout << "  _______\n";
+      cout << "  |/   | \n";
+      cout << "  |    O \n";
+      cout << "  |    |\n";
+      cout << "  |    | \n";
+      cout << "  |\n";
+      cout << " _|__________\n\n";
      break;
      case 6 :
       cout << "Anzahl falscher Buchstaben: " << numberWrongLetters << "\n\n";
-      cout << " _______\n";
-      cout << " |/   | \n";
-      cout << " |    O \n";
-      cout << " |   \\|\n";
-      cout << " |    | \n";
-      cout << " |\n";
-      cout << "_|__________\n\n";
+      cout << "  _______\n";
+      cout << "  |/   | \n";
+      cout << "  |    O \n";
+      cout << "  |   \\|\n";
+      cout << "  |    | \n";
+      cout << "  |\n";
+      cout << " _|__________\n\n";
      break;
      case 7 :
       cout << "Anzahl falscher Buchstaben: " << numberWrongLetters << "\n\n";
-      cout << " _______\n";
-      cout << " |/   | \n";
-      cout << " |    O \n";
-      cout << " |   \\|/\n";
-      cout << " |    | \n";
-      cout << " |\n";
-      cout << "_|__________\n\n";
+      cout << "  _______\n";
+      cout << "  |/   | \n";
+      cout << "  |    O \n";
+      cout << "  |   \\|/\n";
+      cout << "  |    | \n";
+      cout << "  |\n";
+      cout << " _|__________\n\n";
      break;
      case 8 :
       cout << "Anzahl falscher Buchstaben: " << numberWrongLetters << "\n\n";
-      cout << " _______\n";
-      cout << " |/   | \n";
-      cout << " |    O \n";
-      cout << " |   \\|/\n";
-      cout << " |    | \n";
-      cout << " |   /\n";
-      cout << "_|__________\n\n";
+      cout << "  _______\n";
+      cout << "  |/   | \n";
+      cout << "  |    O \n";
+      cout << "  |   \\|/\n";
+      cout << "  |    | \n";
+      cout << "  |   /\n";
+      cout << " _|__________\n\n";
      break;
      case 9 :
       cout << "Anzahl falscher Buchstaben: " << numberWrongLetters << "\n\n";
-      cout << " _______\n";
-      cout << " |/   | \n";
-      cout << " |    O \n";
-      cout << " |   \\|/\n";
-      cout << " |    | \n";
-      cout << " |   / \\\n";
-      cout << "_|__________\n\n";
+      cout << "  _______\n";
+      cout << "  |/   | \n";
+      cout << "  |    O \n";
+      cout << "  |   \\|/\n";
+      cout << "  |    | \n";
+      cout << "  |   / \\\n";
+      cout << " _|__________\n\n";
      break;
      case 10 :
       cout << "Anzahl falscher Buchstaben: " << numberWrongLetters << "\n\n";
-      cout << " _______\n";
-      cout << " |/   | \n";
-      cout << " |    X \n";
-      cout << " |   \\|/\n";
-      cout << " |    | \n";
-      cout << " |   / \\\n";
-      cout << "_|__________\n\n";
+      cout << "  _______\n";
+      cout << "  |/   | \n";
+      cout << "  |    X \n";
+      cout << "  |   \\|/\n";
+      cout << "  |    | \n";
+      cout << "  |   / \\\n";
+      cout << " _|__________\n\n";
      break;
  }
 }
@@ -131,10 +131,13 @@ void readFile() {
     file.open ("woerter.txt");
     if (!file.is_open()) return;
 
-    string word;
+    char *strs[10];
+    char word[100];
     while (file >> word){
+        strs[0] = word;
         cout<< word << '\n';
     }
+        cout<< *strs << '\n';
 }
 
 int main (void)
