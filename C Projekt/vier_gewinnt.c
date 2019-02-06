@@ -3,40 +3,41 @@
 using namespace std;
 
 
-const int rows = 6, cols = 7;
+const int ROWS = 6, COLS = 7;
 int x, y, userRow, userCol;
 bool player_1 = false;
 bool gameRunning = true;
 
-bool checkWin(char gameBoard[][cols], char playerSymbol){
+bool checkWin(char gameBoard[][COLS], char playerSymbol){
 
-  for (int i = 0; i < rows; ++i){
-    for (int j = 0; j <= cols - 3; ++j) {
-      if (gameBoard[i][j] == playerSymbol && gameBoard[i][j] == gameBoard[i][j+1] && gameBoard[i][j+1] == gameBoard[i][j+2] && gameBoard[i][j+2] == gameBoard[i][j+3]){
+  //check horizontal
+  for (x = 0; x < ROWS; ++x){
+    for (y = 0; y <= COLS - 3; ++y) {
+      if (gameBoard[x][y] == playerSymbol && gameBoard[x][y] == gameBoard[x][y+1] && gameBoard[x][y+1] == gameBoard[x][y+2] && gameBoard[x][y+2] == gameBoard[x][y+3]){
         return true;
       }
     }
   }
-
-  for (int i = 0; i <= rows - 3; ++i){
-    for (int j = 0; j < cols; ++j) {
-      if (gameBoard[i][j] == playerSymbol && gameBoard[i][j] == gameBoard[i+1][j] && gameBoard[i+1][j] == gameBoard[i+2][j] && gameBoard[i+2][j] == gameBoard[i+3][j]){
+  //check vertical
+  for (x = 0; x <= ROWS - 3; ++x){
+    for (y = 0; y < COLS; ++y) {
+      if (gameBoard[x][y] == playerSymbol && gameBoard[x][y] == gameBoard[x+1][y] && gameBoard[x+1][y] == gameBoard[x+2][y] && gameBoard[x+2][y] == gameBoard[x+3][y]){
         return true;
       } 
     }
   }
-
-  for (int i = 0; i <= rows - 3; ++i){
-    for (int j = 0; j <= cols - 3; ++j) {
-      if (gameBoard[i][j] == playerSymbol && gameBoard[i][j] == gameBoard[i+1][j+1] && gameBoard[i+1][j+1] == gameBoard[i+2][j+2] && gameBoard[i+2][j+2] == gameBoard[i+3][j+3]){
+  //check diagonal (left to right)
+  for (x = 0; x <= ROWS - 3; ++x){
+    for (y = 0; y <= COLS - 3; ++y) {
+      if (gameBoard[x][y] == playerSymbol && gameBoard[x][y] == gameBoard[x+1][y+1] && gameBoard[x+1][y+1] == gameBoard[x+2][y+2] && gameBoard[x+2][y+2] == gameBoard[x+3][y+3]){
         return true;
       } 
     }
   }
-
-  for (int i = 0; i <= rows - 3; ++i){
-    for (int j = cols - 1; j > 2; --j) {
-      if (gameBoard[i][j] == playerSymbol && gameBoard[i][j] == gameBoard[i+1][j-1] && gameBoard[i+1][j-1] == gameBoard[i+2][j-2] && gameBoard[i+2][j-2] == gameBoard[i+3][j-3]){
+  //check diagonal (right to left)
+  for (x = 0; x <= ROWS - 3; ++x){
+    for (y = COLS - 1; y > 2; --y) {
+      if (gameBoard[x][y] == playerSymbol && gameBoard[x][y] == gameBoard[x+1][y-1] && gameBoard[x+1][y-1] == gameBoard[x+2][y-2] && gameBoard[x+2][y-2] == gameBoard[x+3][y-3]){
         return true;
       } 
     }
@@ -45,15 +46,15 @@ bool checkWin(char gameBoard[][cols], char playerSymbol){
   return false;
 }
 
-void printBoard(char gameBoard[][cols]){
+void printBoard(char gameBoard[][COLS]){
   cout << "      ";
-  for (y = 0; y < cols; y++){
+  for (y = 0; y < COLS; y++){
     cout << y << " ";
   }
   cout << '\n';
-  for (x = 0; x < rows; x++){
+  for (x = 0; x < ROWS; x++){
     cout << "   " << x << "  ";
-    for (y = 0; y < cols; y++){
+    for (y = 0; y < COLS; y++){
       cout <<  gameBoard [x][y] << " ";
     }
     cout << '\n';
@@ -61,7 +62,7 @@ void printBoard(char gameBoard[][cols]){
 }
 
 
-void turn(char gameBoard[][cols], int player){
+void turn(char gameBoard[][COLS], int player){
   char playerSymbol;
 
   if (player == 1){
@@ -72,10 +73,10 @@ void turn(char gameBoard[][cols], int player){
   }
   cout << "\nPlayer " << player << " turn (" << playerSymbol << "): \nRow: ";
   cin >> userRow;
-  cout << "Col: ";
+  cout << "Column: ";
   cin >> userCol;
 
-  if (userRow >= rows || userCol >= cols || userRow <= rows || userCol <= cols){
+  if (userRow >= ROWS || userCol >= COLS || userRow <= ROWS || userCol <= COLS){
     if(gameBoard[userRow][userCol] == '_') {
       cout << "Set at Position -> " << "(" << userRow << ", " << userCol << ")\n\n";
       gameBoard[userRow][userCol] = playerSymbol;
@@ -104,19 +105,18 @@ void turn(char gameBoard[][cols], int player){
   }
 };
 
-int main (void)
-{
-  char gameBoard[rows][cols];
+int main (void) {
+  char gameBoard[ROWS][COLS];
 
   cout << "Welcome to 'Connect Four'!" << "\n\n" << "The Game-Board: " << "\n\n";
 
-  for (x = 0; x < rows; x++){
-    for (y = 0; y < cols; y++){
+  for (x = 0; x < ROWS; x++){
+    for (y = 0; y < COLS; y++){
       gameBoard [x][y] = '_';
     }
   }
 
-  cout <<"      C o l s      \n";
+  cout <<"      C o l u m n s\n";
   cout <<"      0 1 2 3 4 5 6\n";
   cout <<" R 0  _ _ _ _ _ _ _\n";
   cout <<" o 1  _ _ _ _ _ _ _\n";
