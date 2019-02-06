@@ -5,7 +5,7 @@ using namespace std;
 
 const int rows = 6, cols = 7;
 int x, y, userRow, userCol;
-  bool player_1 = false;
+bool player_1 = false;
 
 void turn(char gameBoard[][cols], int player){
   char playerSymbol;
@@ -16,66 +16,85 @@ void turn(char gameBoard[][cols], int player){
   if (player == 2) {
     playerSymbol = 'o';
   }
-      cout << "\nPlayer " << player << " turn (" << playerSymbol << "): \nRow: ";
-      cin >> userRow;
-      cout << "Col: ";
-      cin >> userCol;
+  cout << "\nPlayer " << player << " turn (" << playerSymbol << "): \nRow: ";
+  cin >> userRow;
+  cout << "Col: ";
+  cin >> userCol;
 
+  if (userRow >= rows || userCol >= cols || userRow <= rows || userCol <= cols){
+    if(gameBoard[userRow][userCol] == '_') {
+      cout << "Set at Position -> " << "(" << userRow << ", " << userCol << ")\n\n";
+      gameBoard[userRow][userCol] = playerSymbol;
 
-      if (userRow >= rows || userCol >= cols || userRow <= rows || userCol <= cols){
-          if(gameBoard[userRow][userCol] == '_') {
-            cout << "Set at Position -> " << "(" << userRow << ", " << userCol << ")\n\n";
-            gameBoard[userRow][userCol] = playerSymbol;
-
-                  for (x = 0; x < rows; x++){
+      for (x = 0; x < rows; x++){
         cout << "     ";
         for (y = 0; y < cols; y++){
           cout <<  gameBoard [x][y] << " ";
         }
         cout << '\n';
       }
-          } else {
-            cout << "You can't do this turn\n";
-            turn(gameBoard, player);
-          }
-      } else {
-        cout << "You can't do this turn\n";
-        turn(gameBoard, player);
-      }
+    } else {
+      cout << "You can't do this turn\n";
+      turn(gameBoard, player);
+    }
+  } else {
+    cout << "You can't do this turn\n";
+    turn(gameBoard, player);
+  }
 
-      if (player == 1){
-        player_1 = false;
-      }
-      if (player == 2){
-          player_1 = true;
-      }
+  if (player == 1){
+    player_1 = false;
+  }
+  if (player == 2){
+    player_1 = true;
+  }
 };
 
 bool checkWin(char gameBoard[][cols]){
-    int i,j,k,count;
+  int i,j;
+  int count = 0;
 
-    //checks horizontal win
+ 
+  // Loop from 0 to 5 checking its value against player number
+    for (int i = 0; i < rows; i++) {
+        if (gameBoard[i][cols] == 'o') {
+            // If it is the player, count it.
+
+            count++;
+
+            // If it reaches four, you have a win.
+            if (count == 4) { return true; }
+        }
+        else {
+            // If any time it doesn't equal player
+            // aka empty or other player piece, reset the counter.
+            count = 0;
+        }
+    }
+    // Never reached 4, so you have no win yet.
+    return false;
+/*
+  //checks horizontal win
     for(i=0;i<rows;i++)
         for(j=0;j<cols-3;j++)
-            if(gameBoard[i][j] != 0 && gameBoard[i][j]==gameBoard[i][j+1] && gameBoard[i][j]==gameBoard[i][j+2] && gameBoard[i][j]==gameBoard[i][j+3])
+            if(gameBoard[i][j] != '_' && gameBoard[i][j]==gameBoard[i][j+1] && gameBoard[i][j]==gameBoard[i][j+2] && gameBoard[i][j]==gameBoard[i][j+3])
                 return true;
             else
                 return false;
-                //return 1;
 
     //checks vertical win
     for(i=0;i<rows-3;i++)
         for(j=0;j<cols;j++)
-            if(gameBoard[i][j] != 0 && gameBoard[i][j]==gameBoard[i+1][j] && gameBoard[i][j]==gameBoard[i+2][j] && gameBoard[i][j]==gameBoard[i+3][j])
+            if(gameBoard[i][j] != '_' && gameBoard[i][j]==gameBoard[i+1][j] && gameBoard[i][j]==gameBoard[i+2][j] && gameBoard[i][j]==gameBoard[i+3][j])
                 return true;
             else
                 return false;
-                //return 2;
+                
 
     //checks rigth diagonal win
     for(i=0;i<rows-3;i++)
         for(j=0;j<cols-3;j++)
-            if(gameBoard[i][j] != 0 && gameBoard[i][j]==gameBoard[i+1][j+1] && gameBoard[i][j]==gameBoard[i+2][j+2] && gameBoard[i][j]==gameBoard[i+3][j+3])
+            if(gameBoard[i][j] != '_' && gameBoard[i][j]==gameBoard[i+1][j+1] && gameBoard[i][j]==gameBoard[i+2][j+2] && gameBoard[i][j]==gameBoard[i+3][j+3])
                 return true;
             else
                 return false;
@@ -83,10 +102,10 @@ bool checkWin(char gameBoard[][cols]){
     //checks left diagonal win
     for(i=0;i<rows-3;i++)
         for(j=0;j<cols-3;j++)
-            if(gameBoard[i][j] != 0 && gameBoard[i][j]==gameBoard[i+1][j-1] && gameBoard[i][j]==gameBoard[i+2][j-2] && gameBoard[i][j]==gameBoard[i+3][j-3])
+            if(gameBoard[i][j] != '_' && gameBoard[i][j]==gameBoard[i+1][j-1] && gameBoard[i][j]==gameBoard[i+2][j-2] && gameBoard[i][j]==gameBoard[i+3][j-3])
                 return true;
             else
-                return false;
+                return false;*/
 }
 
 int main (void)
