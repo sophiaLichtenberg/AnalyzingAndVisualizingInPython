@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <iostream>
+#include <limits>
 using namespace std;
 
 
 const int ROWS = 6, COLS = 7;
-int x, y, userRow, userCol;
+int x, y;
 bool player_1 = false;
 bool gameRunning = true;
 
@@ -64,6 +65,7 @@ void printBoard(char gameBoard[][COLS]){
 
 void turn(char gameBoard[][COLS], int player){
   char playerSymbol;
+  int userRow, userCol;
 
   if (player == 1){
     playerSymbol = 'x';
@@ -73,16 +75,26 @@ void turn(char gameBoard[][COLS], int player){
   }
   cout << "\nPlayer " << player << " turn (" << playerSymbol << "): \nRow: ";
   cin >> userRow;
+  while (cin.fail()) {
+    cin.clear();
+    cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+    cout << "Row: ";
+    cin >> userRow;
+  } 
   cout << "Column: ";
   cin >> userCol;
-
-  if (userRow >= ROWS || userCol >= COLS || userRow <= ROWS || userCol <= COLS){
+  while (cin.fail()) { 
+    cin.clear();
+    cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+    cout << "Column: ";
+    cin >> userCol;
+  }
+  
+  if (userRow >= 0 && userCol >= 0 && userRow < ROWS && userCol < COLS){
     if(gameBoard[userRow][userCol] == '_') {
       cout << "Set at Position -> " << "(" << userRow << ", " << userCol << ")\n\n";
       gameBoard[userRow][userCol] = playerSymbol;
-      
       printBoard(gameBoard);
-
     } else {
       cout << "You can't do this turn\n";
       turn(gameBoard, player);
