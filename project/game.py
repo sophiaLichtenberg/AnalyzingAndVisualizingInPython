@@ -6,19 +6,19 @@ wn = t.Screen()
 wn.bgcolor("black")
 wn.setup(640, 480)
 
-score_label = t.Turtle()
-nextLevel_label = t.Turtle()
-button = t.Turtle()
-
+score_label = t.Turtle()  # turtle to write the score
+nextLevel_label = t.Turtle()  # turtle to announce the next level
+button = t.Turtle()  # turtle for start button
 
 score_label.hideturtle()
 nextLevel_label.hideturtle()
 button.hideturtle()
 
 score = 0
-level_counter = 0
-width = 32
+level_counter = 0  # tells the current level - 1
+width = 32  # width of cherries, door, pacman, etc. is always 32
 
+# shapes of the different game components
 wall_shape = os.path.join(os.getcwd(), "wall.gif")
 fruit_shape = os.path.join(os.getcwd(), "cherry.gif")
 player_shape = os.path.join(os.getcwd(), "pacman_right.gif")
@@ -32,7 +32,6 @@ wn.register_shape(monster_shape)
 
 
 # Monster class
-
 class Monster(t.Turtle):
     go_left = False
     go_right = True
@@ -63,6 +62,7 @@ class Monster(t.Turtle):
                         self.go_right = True
                         self.left(180)  # turtle turn around
 
+    # check collision with packman
     def checkCollision(self, player):
         global keepGoing
         px = player.xcor()  # Player x
@@ -72,7 +72,7 @@ class Monster(t.Turtle):
 
         if py == my:
             if px <= mx + width and px + width >= mx:
-                endGame()
+                endGame()  # in case of collision, game is ended
                 self.goto(-1000, -1000)
 
 
@@ -110,9 +110,9 @@ class Player(Component):
         time.sleep(2)
         wn.clear()
         wn.bgcolor("black")
-        del walls[:]                # empty the Walls and Fruits Array --> will be refilled in setup_level
+        del walls[:]  # empty the Walls and Fruits Array --> will be refilled in setup_level
         del fruits[:]
-        level_counter += 1          # count up for next Level
+        level_counter += 1  # count up for next Level
         init_level()
 
     # method to collect the cherries
@@ -121,9 +121,9 @@ class Player(Component):
         global score
         fruit[0].goto(-1000, 1000)  # put fruit out of Screen and clear, bc delete Turtle not possbile
         fruit[0].clear()
-        fruits.remove(fruit)        # remove from Array of fruits, so Play won't recognize again
-        score += 1                  # count up the global Var Score
-        score_label.undo()          # rewrite the Score Label-Turtle
+        fruits.remove(fruit)  # remove from Array of fruits, so Play won't recognize again
+        score += 1  # count up the global Var Score
+        score_label.undo()  # rewrite the Score Label-Turtle
         score_label.penup()
         score_label.hideturtle()
         score_label.color("white")
@@ -157,13 +157,16 @@ class Player(Component):
         go_to_x = self.xcor() + width
         go_to_y = self.ycor()
 
+        # hit the wall
         if (go_to_x, go_to_y) not in walls:
             self.goto(go_to_x, go_to_y)
 
+        # hit the door
         if (go_to_x, go_to_y) == (door.xcor(), door.ycor()):
             self.goto(go_to_x, go_to_y)
             self.next_level()
 
+        # hit a cherry
         for fruit in fruits:
             if (go_to_x, go_to_y) == fruit[1]:
                 self.goto(go_to_x, go_to_y)
@@ -173,13 +176,17 @@ class Player(Component):
         self.changeShape("pacman_up.gif")
         go_to_x = self.xcor()
         go_to_y = self.ycor() + width
+
+        # hit the wall
         if (go_to_x, go_to_y) not in walls:
             self.goto(go_to_x, go_to_y)
 
+        # hit the door
         if (go_to_x, go_to_y) == (door.xcor(), door.ycor()):
             self.goto(go_to_x, go_to_y)
             self.next_level()
 
+        # hit a cherry
         for fruit in fruits:
             if (go_to_x, go_to_y) == fruit[1]:
                 self.goto(go_to_x, go_to_y)
@@ -189,6 +196,8 @@ class Player(Component):
         self.changeShape("pacman_down.gif")
         go_to_x = self.xcor()
         go_to_y = self.ycor() - width
+
+        # hit the wall
         if (go_to_x, go_to_y) not in walls:
             self.goto(go_to_x, go_to_y)
 
@@ -197,44 +206,51 @@ class Player(Component):
             self.goto(go_to_x, go_to_y)
             self.next_level()
 
+        # hit a cherry
         for fruit in fruits:
             if (go_to_x, go_to_y) == fruit[1]:
                 self.goto(go_to_x, go_to_y)
                 self.collect_fruit(fruit)
 
 
-# List of Level
+# List of Levels
 levels = []
 # two dimensional Array for the Level Design
+# '#' is the symbol for a wall
+# 'd' is the symbol for a door
+# 'c' is the symbol for a cherry
+# 'p' is the symbol for a player
+# 'm' is the symbol for a monster
+
 level_1 = [
     "####################",
-    "#  #ff             #",
+    "# p#cc             #",
     "#  #######  #####  #",
-    "#        #  #f     #",
-    "# f      #  #####  #",
-    "#######  #  #f     #",
-    "#        #  ##### p#",
+    "#        #  #c     #",
+    "# c      #  #####  #",
+    "#######  #  #c     #",
+    "#        #  #####  #",
     "#  #######    #    #",
-    "#             # f d#",
+    "#             # c d#",
     "#  #################",
     "#         m        #",
     "####  ###########  #",
     "#            #     #",
-    "#            #f    #",
+    "#            #c    #",
     "####################"
 ]
 level_2 = [
     "####################",
-    "#ff#ff  #f  #   p  #",
+    "#cc#cc  #c  #   p  #",
     "#  # #####  #  #####",
     "#  #     #  #      #",
     "#  ####  #  ####   #",
-    "#        #  #f     #",
+    "#        #  #c     #",
     "#        #     #   #",
     "#  #############   #",
     "#              #   #",
     "#   ########   #   #",
-    "#   #  d# f#   #   #",
+    "#   #  d# c#   #   #",
     "#   #          #   #",
     "#   ############   #",
     "#         m        #",
@@ -242,16 +258,16 @@ level_2 = [
 ]
 level_3 = [
     "####################",
-    "#p       # d#     f#",
+    "#p       # d#     c#",
     "#### #####  #  #####",
-    "# f#     #  #     f#",
-    "# f####  #  #     f#",
-    "#        #  #     f#",
+    "# c#     #  #     c#",
+    "# c####  #  #     c#",
+    "#        #  #     c#",
     "#        #     #   #",
     "#  #############   #",
     "#              #   #",
     "#   ########   #   #",
-    "#   #   # f#   #   #",
+    "#   #  c# c#   #   #",
     "#   #          #   #",
     "#   ############   #",
     "#         m        #",
@@ -267,7 +283,6 @@ levels.append(level_3)
 def init_level():
     global level_counter
     global keepGoing
-
     if level_counter == 0:
         setup_level(levels[0])
     if level_counter == 1:
@@ -286,11 +301,12 @@ def setup_level(level):
             symbol = level[y][x]
             screen_x = -308 + (x * width)
             screen_y = 224 - (y * width)
-
+            # setup wall
             if symbol == "#":
                 wall.goto(screen_x, screen_y)
                 walls.append((screen_x, screen_y))
                 wall.stamp()
+            # setup player
             if symbol == "p":
                 player = Player(player_shape)
                 player.goto(screen_x, screen_y)
@@ -302,30 +318,36 @@ def setup_level(level):
                 t.onkey(player.go_up, "Up")
                 t.onkey(player.go_down, "Down")
                 t.onkey(exitGame, "Escape")  # Escape beendet das Spiel
-            if symbol == "f":
+            # setup cherry
+            if symbol == "c":
                 fruit = Component(fruit_shape)
                 fruit.goto(screen_x, screen_y)
                 fruits.append([fruit, (screen_x, screen_y)])
                 fruit.stamp()
+            # setup door
             if symbol == "d":
                 door.goto(screen_x, screen_y)
                 door.stamp()
+            # setup monster
             if symbol == "m":
                 monster = Monster(monster_shape)
                 monster.goto(screen_x, screen_y)
+
     score_label.penup()
     score_label.hideturtle()
     score_label.color("white")
     score_label.setposition(-260, 207)
     score_label.write("Score " + str(score), move=False, align="center", font=("Arial", 20, "normal"))
 
+    # game loop
     while keepGoing:
         wn.update()
         monster.move()
         monster.checkCollision(player)
 
-# Anfangsbildschirm
-def setup_start_screen():
+
+# start screen
+def update_start_screen():
     wn.bgcolor("black")
     while updateStartScreen:
         wn.update()
@@ -346,6 +368,36 @@ def endGame():
     nextLevel_label.color("white")
     nextLevel_label.write("END", move=False, align="center", font=("Arial", 20, "normal"))
 
+# function to start the game
+def buttonclick(x, y):
+    global updateStartScreen
+    x_left_border = width / 2 - 80
+    x_right_border = 86
+    # if users clicks on button, game starts
+    if x_left_border < x < x_right_border and 0 < y < 30:  # rectangle of button
+        button.undo()
+        wn.bgcolor("black")
+        updateStartScreen = False
+        init_level()  # if start button is pressed, then the game starts
+
+
+# define and setup the start button
+def setupStartButton():
+    button.goto(width / 2 - 80, 0)
+    button.forward(150)
+    button.left(90)
+    button.forward(30)
+    button.left(90)
+    button.forward(150)
+    button.left(90)
+    button.forward(30)
+    button.left(90)
+    # draw rectangle of button
+    button.penup()
+    button.color("white")
+    button.goto(width / 2, 0)
+    button.write("Start game ", align="center", font=("Arial", 20, "normal"))
+
 
 walls = []
 fruits = []
@@ -357,41 +409,7 @@ door.hideturtle()
 wn.tracer(0)
 keepGoing = True
 updateStartScreen = True
-#button.color("blue")
-button.goto(width / 2-80, 0)
-print button.pos()
-button.forward(150)
-print button.pos()
-button.left(90)
-button.forward(30)
-print button.pos()
-button.left(90)
-button.forward(150)
-print button.pos()
-button.left(90)
-button.forward(30)
-print button.pos()
-button.left(90)
-
-button.penup()
-button.color("white")
-button.goto(width / 2, 0)
-button.write("Start game ", align="center",  font=("Arial", 20, "normal"))
-
-def buttonclick(x,y):
-    global updateStartScreen
-    x_left_border = width / 2 -80
-    x_right_border = 86
-    if x>x_left_border and x<x_right_border and y>0 and y<30:
-        button.undo()
-        wn.bgcolor("black")
-        updateStartScreen =False
-        init_level()
-
-
-
+setupStartButton()
 t.onscreenclick(buttonclick, 1)
 t.listen()
-
-setup_start_screen()
-
+update_start_screen()
