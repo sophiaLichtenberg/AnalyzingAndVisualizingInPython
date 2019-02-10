@@ -2,9 +2,10 @@ import turtle as t
 import os
 import time
 
+# screen
 wn = t.Screen()
 wn.bgcolor("black")
-wn.setup(640, 480)
+wn.setup(640, 480)  # width and height of  screen
 
 score_label = t.Turtle()  # turtle to write the score
 nextLevel_label = t.Turtle()  # turtle to announce the next level
@@ -24,6 +25,8 @@ fruit_shape = os.path.join(os.getcwd(), "cherry.gif")
 player_shape = os.path.join(os.getcwd(), "pacman_right.gif")
 monster_shape = os.path.join(os.getcwd(), "monster.gif")
 door_shape = os.path.join(os.getcwd(), "door.gif")
+
+# screen turtle registers the different shapes
 wn.register_shape(wall_shape)
 wn.register_shape(fruit_shape)
 wn.register_shape(player_shape)
@@ -105,7 +108,8 @@ class Player(Component):
         nextLevel_label.hideturtle()
         nextLevel_label.color("white")
         nextLevel_label.setposition(width / 2, 0)
-        nextLevel_label.write("Next Level ", move=False, align="center", font=("Arial", 20, "normal"))
+        if not level_counter == 2:  # only annouces next level, if there exists a next level
+            nextLevel_label.write("Next Level ", move=False, align="center", font=("Arial", 20, "normal"))
         wn.tracer(0)
         time.sleep(2)
         wn.clear()
@@ -113,7 +117,7 @@ class Player(Component):
         del walls[:]  # empty the Walls and Fruits Array --> will be refilled in setup_level
         del fruits[:]
         level_counter += 1  # count up for next Level
-        init_level()
+        init_level()  # init the next level
 
     # method to collect the cherries
     @staticmethod
@@ -282,14 +286,14 @@ levels.append(level_3)
 # Level Setup
 def init_level():
     global level_counter
-    global keepGoing
+    global keepGoing  # while true, game continues
     if level_counter == 0:
         setup_level(levels[0])
     if level_counter == 1:
         setup_level(levels[1])
     if level_counter == 2:
         setup_level(levels[2])
-    if level_counter > 2:
+    if level_counter > 2:  # ends because there are only three levels
         endGame()
 
 
@@ -332,7 +336,7 @@ def setup_level(level):
             if symbol == "m":
                 monster = Monster(monster_shape)
                 monster.goto(screen_x, screen_y)
-
+    # show the score
     score_label.penup()
     score_label.hideturtle()
     score_label.color("white")
@@ -368,7 +372,8 @@ def endGame():
     nextLevel_label.color("white")
     nextLevel_label.write("END", move=False, align="center", font=("Arial", 20, "normal"))
 
-# function to start the game
+
+# function to start the game, when the player clicks start
 def buttonclick(x, y):
     global updateStartScreen
     x_left_border = width / 2 - 80
@@ -409,6 +414,8 @@ door.hideturtle()
 wn.tracer(0)
 keepGoing = True
 updateStartScreen = True
+
+# create the start button
 setupStartButton()
 t.onscreenclick(buttonclick, 1)
 t.listen()
