@@ -8,9 +8,12 @@ wn.setup(640, 480)
 
 score_label = t.Turtle()
 nextLevel_label = t.Turtle()
+button = t.Turtle()
+
 
 score_label.hideturtle()
 nextLevel_label.hideturtle()
+button.hideturtle()
 
 score = 0
 level_counter = 0
@@ -40,6 +43,8 @@ class Monster(t.Turtle):
         self.penup()
         self.speed(0)
 
+    # movement of monster
+    # if there is a collision with a wall -> has to change movement direction
     def move(self):
         for current_wall in walls:
             if current_wall[1] == self.ycor():
@@ -80,6 +85,7 @@ class Component(t.Turtle):
         self.speed(0)
 
 
+# player class
 class Player(Component):
 
     def __init__(self, shape):
@@ -94,7 +100,6 @@ class Player(Component):
     @staticmethod
     def next_level():
         global level_counter
-        global level_stop
         nextLevel_label.undo()
         nextLevel_label.penup()
         nextLevel_label.hideturtle()
@@ -108,12 +113,9 @@ class Player(Component):
         del walls[:]                # empty the Walls and Fruits Array --> will be refilled in setup_level
         del fruits[:]
         level_counter += 1          # count up for next Level
-        level_stop = True
-        level_stop = False
         init_level()
 
-
-
+    # method to collect the cherries
     @staticmethod
     def collect_fruit(fruit):
         global score
@@ -278,7 +280,6 @@ def init_level():
 
 def setup_level(level):
     global score
-    global level_stop
     # iterate over the levels Array for y-coordinate and x-coordinate
     for y in range(len(level)):
         for x in range(len(level[y])):
@@ -322,10 +323,12 @@ def setup_level(level):
         wn.update()
         monster.move()
         monster.checkCollision(player)
-        print str(monster.pos())
-        if level_stop:
-            print "bla"
-            break
+
+# Anfangsbildschirm
+def setup_start_screen():
+    wn.bgcolor("black")
+    while updateStartScreen:
+        wn.update()
 
 
 def exitGame():
@@ -342,26 +345,53 @@ def endGame():
     nextLevel_label.hideturtle()
     nextLevel_label.color("white")
     nextLevel_label.write("END", move=False, align="center", font=("Arial", 20, "normal"))
-    # bisherigen Highscore auslesen
-    # with open("highscore.txt") as highscoreContainer:
-    #   highscore = highscoreContainer.readline()
-    # print "highscore " + highscore
-    # print type(highscore)
-    # highscoreContainer.close()
-
-    # if score > float(highscore):
-    #   f = open("highscore.txt", "w")
-    #  f.write(str(score))
 
 
 walls = []
 fruits = []
 wall = Component(wall_shape)
 door = Component(door_shape)
-
+wall.hideturtle()
+door.hideturtle()
 
 wn.tracer(0)
 keepGoing = True
-level_stop = False
+updateStartScreen = True
+#button.color("blue")
+button.goto(width / 2-80, 0)
+print button.pos()
+button.forward(150)
+print button.pos()
+button.left(90)
+button.forward(30)
+print button.pos()
+button.left(90)
+button.forward(150)
+print button.pos()
+button.left(90)
+button.forward(30)
+print button.pos()
+button.left(90)
 
-init_level()
+button.penup()
+button.color("white")
+button.goto(width / 2, 0)
+button.write("Start game ", align="center",  font=("Arial", 20, "normal"))
+
+def buttonclick(x,y):
+    global updateStartScreen
+    x_left_border = width / 2 -80
+    x_right_border = 86
+    if x>x_left_border and x<x_right_border and y>0 and y<30:
+        button.undo()
+        wn.bgcolor("black")
+        updateStartScreen =False
+        init_level()
+
+
+
+t.onscreenclick(buttonclick, 1)
+t.listen()
+
+setup_start_screen()
+
