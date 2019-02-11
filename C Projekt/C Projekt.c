@@ -147,6 +147,7 @@ int main (void)
   char alreadyGuessed[sizeof(wordToGuess)] = "\0";
   char gameRunning = true;
   char inputCharacter;
+  string input;
   int amountWrongLetters = 0;
 
   for (int i = 1; i < sizeof(wordToGuess); i++){
@@ -157,13 +158,17 @@ int main (void)
     while(gameRunning == true){
         
         cout << "Geben Sie einen Buchstaben ein: " << '\n';
-        cin >> inputCharacter;
+        cin >> input;
+        inputCharacter = input[0];
+
+        cout << input.length();
         
         // User Input Errors handeln
-        while(!isalpha(inputCharacter)){// kein Buchstabe, sondern anderes Zeichen eingegeben
-             printf("Sie muessen einen Buchstaben eingeben! \n"); 
-             cout << "Geben Sie einen Buchstaben ein: " << '\n';
-             cin >> inputCharacter;
+        while(!isalpha(inputCharacter) || input.length() > 1){// nur genau ein Buchstabe ist der korrekte Input
+              cout << "Sie muessen einen Buchstaben eingeben! \n";
+              cout << "Geben Sie einen Buchstaben ein: " << '\n';
+              cin >> input;
+              inputCharacter = input[0];
         }
 
 // alle erratenen Buchstaben einsetzen
