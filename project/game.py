@@ -2,25 +2,31 @@ import turtle as t
 import os
 import time
 
+# screen
 wn = t.Screen()
 wn.bgcolor("black")
-wn.setup(640, 480)
+wn.setup(640, 480)  # width and height of  screen
 
-score_label = t.Turtle()
-nextLevel_label = t.Turtle()
+score_label = t.Turtle()  # turtle to write the score
+nextLevel_label = t.Turtle()  # turtle to announce the next level
+button = t.Turtle()  # turtle for start button
 
 score_label.hideturtle()
 nextLevel_label.hideturtle()
+button.hideturtle()
 
 score = 0
-level_counter = 0
-width = 32
+level_counter = 0  # tells the current level - 1
+width = 32  # width of cherries, door, pacman, etc. is always 32
 
+# shapes of the different game components
 wall_shape = os.path.join(os.getcwd(), "wall.gif")
 fruit_shape = os.path.join(os.getcwd(), "cherry.gif")
 player_shape = os.path.join(os.getcwd(), "pacman_right.gif")
 monster_shape = os.path.join(os.getcwd(), "monster.gif")
 door_shape = os.path.join(os.getcwd(), "door.gif")
+
+# screen turtle registers the different shapes
 wn.register_shape(wall_shape)
 wn.register_shape(fruit_shape)
 wn.register_shape(player_shape)
@@ -29,7 +35,6 @@ wn.register_shape(monster_shape)
 
 
 # Monster class
-
 class Monster(t.Turtle):
     go_left = False
     go_right = True
@@ -40,6 +45,8 @@ class Monster(t.Turtle):
         self.penup()
         self.speed(0)
 
+    # movement of monster
+    # if there is a collision with a wall -> has to change movement direction
     def move(self):
         for current_wall in walls:
             if current_wall[1] == self.ycor():
@@ -58,6 +65,7 @@ class Monster(t.Turtle):
                         self.go_right = True
                         self.left(180)  # turtle turn around
 
+    # check collision with packman
     def checkCollision(self, player):
         global keepGoing
         px = player.xcor()  # Player x
@@ -67,7 +75,7 @@ class Monster(t.Turtle):
 
         if py == my:
             if px <= mx + width and px + width >= mx:
-                endGame()
+                endGame()  # in case of collision, game is ended
                 self.goto(-1000, -1000)
 
 
@@ -80,6 +88,7 @@ class Component(t.Turtle):
         self.speed(0)
 
 
+# player class
 class Player(Component):
 
     def __init__(self, shape):
@@ -94,34 +103,31 @@ class Player(Component):
     @staticmethod
     def next_level():
         global level_counter
-        global level_stop
         nextLevel_label.undo()
         nextLevel_label.penup()
         nextLevel_label.hideturtle()
         nextLevel_label.color("white")
         nextLevel_label.setposition(width / 2, 0)
-        nextLevel_label.write("Next Level ", move=False, align="center", font=("Arial", 20, "normal"))
+        if not level_counter == 2:  # only annouces next level, if there exists a next level
+            nextLevel_label.write("Next Level ", move=False, align="center", font=("Arial", 20, "normal"))
         wn.tracer(0)
         time.sleep(2)
         wn.clear()
         wn.bgcolor("black")
-        del walls[:]                # empty the Walls and Fruits Array --> will be refilled in setup_level
+        del walls[:]  # empty the Walls and Fruits Array --> will be refilled in setup_level
         del fruits[:]
-        level_counter += 1          # count up for next Level
-        level_stop = True
-        level_stop = False
-        init_level()
+        level_counter += 1  # count up for next Level
+        init_level()  # init the next level
 
-
-
+    # method to collect the cherries
     @staticmethod
     def collect_fruit(fruit):
         global score
         fruit[0].goto(-1000, 1000)  # put fruit out of Screen and clear, bc delete Turtle not possbile
         fruit[0].clear()
-        fruits.remove(fruit)        # remove from Array of fruits, so Play won't recognize again
-        score += 1                  # count up the global Var Score
-        score_label.undo()          # rewrite the Score Label-Turtle
+        fruits.remove(fruit)  # remove from Array of fruits, so Play won't recognize again
+        score += 1  # count up the global Var Score
+        score_label.undo()  # rewrite the Score Label-Turtle
         score_label.penup()
         score_label.hideturtle()
         score_label.color("white")
@@ -155,13 +161,16 @@ class Player(Component):
         go_to_x = self.xcor() + width
         go_to_y = self.ycor()
 
+        # hit the wall
         if (go_to_x, go_to_y) not in walls:
             self.goto(go_to_x, go_to_y)
 
+        # hit the door
         if (go_to_x, go_to_y) == (door.xcor(), door.ycor()):
             self.goto(go_to_x, go_to_y)
             self.next_level()
 
+        # hit a cherry
         for fruit in fruits:
             if (go_to_x, go_to_y) == fruit[1]:
                 self.goto(go_to_x, go_to_y)
@@ -171,13 +180,17 @@ class Player(Component):
         self.changeShape("pacman_up.gif")
         go_to_x = self.xcor()
         go_to_y = self.ycor() + width
+
+        # hit the wall
         if (go_to_x, go_to_y) not in walls:
             self.goto(go_to_x, go_to_y)
 
+        # hit the door
         if (go_to_x, go_to_y) == (door.xcor(), door.ycor()):
             self.goto(go_to_x, go_to_y)
             self.next_level()
 
+        # hit a cherry
         for fruit in fruits:
             if (go_to_x, go_to_y) == fruit[1]:
                 self.goto(go_to_x, go_to_y)
@@ -187,6 +200,8 @@ class Player(Component):
         self.changeShape("pacman_down.gif")
         go_to_x = self.xcor()
         go_to_y = self.ycor() - width
+
+        # hit the wall
         if (go_to_x, go_to_y) not in walls:
             self.goto(go_to_x, go_to_y)
 
@@ -195,44 +210,51 @@ class Player(Component):
             self.goto(go_to_x, go_to_y)
             self.next_level()
 
+        # hit a cherry
         for fruit in fruits:
             if (go_to_x, go_to_y) == fruit[1]:
                 self.goto(go_to_x, go_to_y)
                 self.collect_fruit(fruit)
 
 
-# List of Level
+# List of Levels
 levels = []
 # two dimensional Array for the Level Design
+# '#' is the symbol for a wall
+# 'd' is the symbol for a door
+# 'c' is the symbol for a cherry
+# 'p' is the symbol for a player
+# 'm' is the symbol for a monster
+
 level_1 = [
     "####################",
-    "#  #ff             #",
+    "# p#cc             #",
     "#  #######  #####  #",
-    "#        #  #f     #",
-    "# f      #  #####  #",
-    "#######  #  #f     #",
-    "#        #  ##### p#",
+    "#        #  #c     #",
+    "# c      #  #####  #",
+    "#######  #  #c     #",
+    "#        #  #####  #",
     "#  #######    #    #",
-    "#             # f d#",
+    "#             # c d#",
     "#  #################",
     "#         m        #",
     "####  ###########  #",
     "#            #     #",
-    "#            #f    #",
+    "#            #c    #",
     "####################"
 ]
 level_2 = [
     "####################",
-    "#ff#ff  #f  #   p  #",
+    "#cc#cc  #c  #   p  #",
     "#  # #####  #  #####",
     "#  #     #  #      #",
     "#  ####  #  ####   #",
-    "#        #  #f     #",
+    "#        #  #c     #",
     "#        #     #   #",
     "#  #############   #",
     "#              #   #",
     "#   ########   #   #",
-    "#   #  d# f#   #   #",
+    "#   #  d# c#   #   #",
     "#   #          #   #",
     "#   ############   #",
     "#         m        #",
@@ -240,16 +262,16 @@ level_2 = [
 ]
 level_3 = [
     "####################",
-    "#p       # d#     f#",
+    "#p       # d#     c#",
     "#### #####  #  #####",
-    "# f#     #  #     f#",
-    "# f####  #  #     f#",
-    "#        #  #     f#",
+    "# c#     #  #     c#",
+    "# c####  #  #     c#",
+    "#        #  #     c#",
     "#        #     #   #",
     "#  #############   #",
     "#              #   #",
     "#   ########   #   #",
-    "#   #   # f#   #   #",
+    "#   #  c# c#   #   #",
     "#   #          #   #",
     "#   ############   #",
     "#         m        #",
@@ -264,32 +286,31 @@ levels.append(level_3)
 # Level Setup
 def init_level():
     global level_counter
-    global keepGoing
-
+    global keepGoing  # while true, game continues
     if level_counter == 0:
         setup_level(levels[0])
     if level_counter == 1:
         setup_level(levels[1])
     if level_counter == 2:
         setup_level(levels[2])
-    if level_counter > 2:
+    if level_counter > 2:  # ends because there are only three levels
         endGame()
 
 
 def setup_level(level):
     global score
-    global level_stop
     # iterate over the levels Array for y-coordinate and x-coordinate
     for y in range(len(level)):
         for x in range(len(level[y])):
             symbol = level[y][x]
             screen_x = -308 + (x * width)
             screen_y = 224 - (y * width)
-
+            # setup wall
             if symbol == "#":
                 wall.goto(screen_x, screen_y)
                 walls.append((screen_x, screen_y))
                 wall.stamp()
+            # setup player
             if symbol == "p":
                 player = Player(player_shape)
                 player.goto(screen_x, screen_y)
@@ -301,31 +322,39 @@ def setup_level(level):
                 t.onkey(player.go_up, "Up")
                 t.onkey(player.go_down, "Down")
                 t.onkey(exitGame, "Escape")  # Escape beendet das Spiel
-            if symbol == "f":
+            # setup cherry
+            if symbol == "c":
                 fruit = Component(fruit_shape)
                 fruit.goto(screen_x, screen_y)
                 fruits.append([fruit, (screen_x, screen_y)])
                 fruit.stamp()
+            # setup door
             if symbol == "d":
                 door.goto(screen_x, screen_y)
                 door.stamp()
+            # setup monster
             if symbol == "m":
                 monster = Monster(monster_shape)
                 monster.goto(screen_x, screen_y)
+    # show the score
     score_label.penup()
     score_label.hideturtle()
     score_label.color("white")
     score_label.setposition(-260, 207)
     score_label.write("Score " + str(score), move=False, align="center", font=("Arial", 20, "normal"))
 
+    # game loop
     while keepGoing:
         wn.update()
         monster.move()
         monster.checkCollision(player)
-        print str(monster.pos())
-        if level_stop:
-            print "bla"
-            break
+
+
+# start screen
+def update_start_screen():
+    wn.bgcolor("black")
+    while updateStartScreen:
+        wn.update()
 
 
 def exitGame():
@@ -342,26 +371,52 @@ def endGame():
     nextLevel_label.hideturtle()
     nextLevel_label.color("white")
     nextLevel_label.write("END", move=False, align="center", font=("Arial", 20, "normal"))
-    # bisherigen Highscore auslesen
-    # with open("highscore.txt") as highscoreContainer:
-    #   highscore = highscoreContainer.readline()
-    # print "highscore " + highscore
-    # print type(highscore)
-    # highscoreContainer.close()
 
-    # if score > float(highscore):
-    #   f = open("highscore.txt", "w")
-    #  f.write(str(score))
+
+# function to start the game, when the player clicks start
+def buttonclick(x, y):
+    global updateStartScreen
+    x_left_border = width / 2 - 80
+    x_right_border = 86
+    # if users clicks on button, game starts
+    if x_left_border < x < x_right_border and 0 < y < 30:  # rectangle of button
+        button.undo()
+        wn.bgcolor("black")
+        updateStartScreen = False
+        init_level()  # if start button is pressed, then the game starts
+
+
+# define and setup the start button
+def setupStartButton():
+    button.goto(width / 2 - 80, 0)
+    button.forward(150)
+    button.left(90)
+    button.forward(30)
+    button.left(90)
+    button.forward(150)
+    button.left(90)
+    button.forward(30)
+    button.left(90)
+    # draw rectangle of button
+    button.penup()
+    button.color("white")
+    button.goto(width / 2, 0)
+    button.write("Start game ", align="center", font=("Arial", 20, "normal"))
 
 
 walls = []
 fruits = []
 wall = Component(wall_shape)
 door = Component(door_shape)
-
+wall.hideturtle()
+door.hideturtle()
 
 wn.tracer(0)
 keepGoing = True
-level_stop = False
+updateStartScreen = True
 
-init_level()
+# create the start button
+setupStartButton()
+t.onscreenclick(buttonclick, 1)
+t.listen()
+update_start_screen()
