@@ -5,7 +5,7 @@ import time
 # screen
 wn = t.Screen()
 wn.bgcolor("black")
-wn.setup(640, 480)  # width and height of  screen
+wn.setup(640, 480)  # width and height of  screen --> size Quelle1
 
 score_label = t.Turtle()  # turtle to write the score
 nextLevel_label = t.Turtle()  # turtle to announce the next level
@@ -26,6 +26,7 @@ player_shape = os.path.join(os.getcwd(), "pacman_right.gif")
 monster_shape = os.path.join(os.getcwd(), "monster.gif")
 door_shape = os.path.join(os.getcwd(), "door.gif")
 
+# register shapes Quelle1
 # screen turtle registers the different shapes
 wn.register_shape(wall_shape)
 wn.register_shape(fruit_shape)
@@ -79,7 +80,7 @@ class Monster(t.Turtle):
                 self.goto(-1000, -1000)
 
 
-# Walls and Fruits of the game
+# Walls and Fruits of the game --> Quelle1
 class Component(t.Turtle):
     def __init__(self, shape):
         t.Turtle.__init__(self)
@@ -89,6 +90,7 @@ class Component(t.Turtle):
 
 
 # player class
+# angelehnt and Player Klasse in Quelle1
 class Player(Component):
 
     def __init__(self, shape):
@@ -137,10 +139,12 @@ class Player(Component):
     def go_left(self):
         self.changeShape("pacman_left.gif")
 
+        # go_to_x / y -> Quelle1
         go_to_x = self.xcor() - width
         go_to_y = self.ycor()
 
         # hit the wall
+        # Quelle 1
         if (go_to_x, go_to_y) not in walls:
             self.goto(go_to_x, go_to_y)
 
@@ -158,10 +162,12 @@ class Player(Component):
     def go_right(self):
         self.changeShape("pacman_right.gif")
 
+        # go_to_x / y -> Quelle1
         go_to_x = self.xcor() + width
         go_to_y = self.ycor()
 
         # hit the wall
+        # Quelle 1
         if (go_to_x, go_to_y) not in walls:
             self.goto(go_to_x, go_to_y)
 
@@ -178,10 +184,12 @@ class Player(Component):
 
     def go_up(self):
         self.changeShape("pacman_up.gif")
+        # go_to_x / y -> Quelle1
         go_to_x = self.xcor()
         go_to_y = self.ycor() + width
 
         # hit the wall
+        # Quelle 1
         if (go_to_x, go_to_y) not in walls:
             self.goto(go_to_x, go_to_y)
 
@@ -198,10 +206,12 @@ class Player(Component):
 
     def go_down(self):
         self.changeShape("pacman_down.gif")
+        # go_to_x / y -> Quelle1
         go_to_x = self.xcor()
         go_to_y = self.ycor() - width
 
         # hit the wall
+        # Quelle 1
         if (go_to_x, go_to_y) not in walls:
             self.goto(go_to_x, go_to_y)
 
@@ -226,6 +236,7 @@ levels = []
 # 'p' is the symbol for a player
 # 'm' is the symbol for a monster
 
+# Level Design Quelle1
 level_1 = [
     "####################",
     "# p#cc             #",
@@ -260,6 +271,7 @@ level_2 = [
     "#         m        #",
     "####################"
 ]
+
 level_3 = [
     "####################",
     "#p       # d#     c#",
@@ -297,6 +309,7 @@ def init_level():
         endGame()
 
 
+# setup Level Quelle1
 def setup_level(level):
     global score
     # iterate over the levels Array for y-coordinate and x-coordinate
@@ -317,6 +330,7 @@ def setup_level(level):
 
                 # listen to player key events
                 t.listen()
+                # OnKey Listener Quelle1
                 t.onkey(player.go_left, "Left")
                 t.onkey(player.go_right, "Right")
                 t.onkey(player.go_up, "Up")
@@ -344,6 +358,7 @@ def setup_level(level):
     score_label.write("Score " + str(score), move=False, align="center", font=("Arial", 20, "normal"))
 
     # game loop
+    # Quelle1
     while keepGoing:
         wn.update()
         monster.move()
@@ -420,3 +435,7 @@ setupStartButton()
 t.onscreenclick(buttonclick, 1)
 t.listen()
 update_start_screen()
+
+
+
+# Quelle1: https://medium.com/@jkantel/ein-rogue-like-mit-python-und-der-turtle-stage-2-d3c3f5fa0401
