@@ -1,10 +1,3 @@
-#include <stdio.h>
-#include <iostream>
-#include <limits>
-#include <fstream>
-#include <string.h>
-#include <stdbool.h>
-
 #include "vier_gewinnt.h"
 #include "hangman.h"
 
