@@ -84,10 +84,10 @@ int checkUserInput(int player ,char playerSymbol, int row_or_col) {
   string input;
 
   if (row_or_col == 1){
-    cout << "Row: ";
+    cout << "Reihe: ";
   }
   if (row_or_col == 2){
-    cout << "Column: ";
+    cout << "Spalte: ";
   }
 
   cin >> input;
@@ -137,23 +137,23 @@ void turn(char gameBoard[][COLS], int player){
     playerSymbol = 'o';
   }
 
-  cout << "\nPlayer " << player << " turn (" << playerSymbol << "): \n";
+  cout << "\nSpieler " << player << " (" << playerSymbol << "): \n";
   userRow = checkUserInput(player, playerSymbol, 1);
   userCol = checkUserInput(player, playerSymbol, 2);
   
   if(gameBoard[userRow][userCol] == '_') {
-    cout << "Set at Position -> " << "(" << userRow << ", " << userCol << ")\n\n";
+    cout << "Gesetzt an Position -> " << "(" << userRow << ", " << userCol << ")\n\n";
     gameBoard[userRow][userCol] = playerSymbol;
     printBoard(gameBoard);
   } else {
-    cout << "You can't do this turn\n";
+    cout << "Diese Position ist belegt!\n";
     turn(gameBoard, player);
   }
   
 
   if (checkWin(gameBoard, playerSymbol)){
     gameRunning = false;
-    cout << "\n\n  ! GAME END ! " << '\n' << "  Player " << player << " won!\n\n";
+    cout << "\n\n  ! S P I E L E N D E ! " << '\n' << "  Spieler " << player << " hat gewonnen!\n\n";
   } else {
     if (player == 1){
       player_1 = false;
@@ -171,7 +171,7 @@ void turn(char gameBoard[][COLS], int player){
 void init_vier_gewinnt() {
   char gameBoard[ROWS][COLS];
 
-  cout << "\n\n" << "Welcome to 'Connect Four'!" << "\n\n" << "The Game-Board: " << "\n\n";
+  cout << "\n\n" << "Wilkommen zu 'Vier Gewinnt'!" << "\n\n" << "Das Spielbrett: " << "\n\n";
 
   for (x = 0; x < ROWS; x++){
     for (y = 0; y < COLS; y++){
@@ -179,13 +179,13 @@ void init_vier_gewinnt() {
     }
     }
 
-  cout <<"      C o l u m n s\n";
+  cout <<"      S p a l t e  \n";
   cout <<"      0 1 2 3 4 5 6\n";
   cout <<" R 0  _ _ _ _ _ _ _\n";
-  cout <<" o 1  _ _ _ _ _ _ _\n";
-  cout <<" w 2  _ _ _ _ _ _ _\n";
-  cout <<" s 3  _ _ _ _ _ _ _\n";
-  cout <<"   4  _ _ _ _ _ _ _\n";
+  cout <<" e 1  _ _ _ _ _ _ _\n";
+  cout <<" i 2  _ _ _ _ _ _ _\n";
+  cout <<" h 3  _ _ _ _ _ _ _\n";
+  cout <<" e 4  _ _ _ _ _ _ _\n";
   cout <<"   5  _ _ _ _ _ _ _\n\n";
 
   turn(gameBoard, 1);

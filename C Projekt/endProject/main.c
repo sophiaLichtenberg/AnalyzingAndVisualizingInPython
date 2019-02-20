@@ -9,7 +9,7 @@ bool endGame = false;
 
 void runArcade() {
   string input;
-
+  cout << input;
   cout << '\n' << "\342\230\272 Willkommen zur Spiel Arcade \342\230\272"<< "\n\n" ;
   cout << "Was wollen Sie spielen?: (Geben Sie die 1 ein für Hangman und die 2 für Vier gewinnt oder 'e' um das Programm zu beenden)" << '\n';
   cin >> input;
