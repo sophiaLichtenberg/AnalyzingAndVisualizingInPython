@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <iostream>
+#include <string.h>
 #include <limits>
+#include <stdlib.h>
+#include <ctype.h>
 using namespace std;
 
 #ifndef vier_gewinnt
@@ -64,6 +67,30 @@ void printBoard(char gameBoard[][COLS]){
   }
 }
 
+int checkUserInput(int player ,char playerSymbol, int x) {
+  string input;
+
+  if (x == 1){
+    cout << "Row: ";
+    cin >> input;
+  }
+  if (x == 2){
+    cout << "Column: ";
+    cin >> input;
+  }
+
+  if(input.length() == 1){
+    if(isdigit(input[0])){
+      return atoi(input.c_str());;
+    } else {
+      return checkUserInput(player, playerSymbol, x);
+    }
+  } else {
+    return checkUserInput(player, playerSymbol, x);
+  }
+
+}
+
 
 void turn(char gameBoard[][COLS], int player){
   char playerSymbol;
@@ -75,22 +102,10 @@ void turn(char gameBoard[][COLS], int player){
   if (player == 2) {
     playerSymbol = 'o';
   }
-  cout << "\nPlayer " << player << " turn (" << playerSymbol << "): \nRow: ";
-  cin >> userRow;
-  while (cin.fail()) {
-    cin.clear();
-    cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
-    cout << "Row: ";
-    cin >> userRow;
-  } 
-  cout << "Column: ";
-  cin >> userCol;
-  while (cin.fail()) { 
-    cin.clear();
-    cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
-    cout << "Column: ";
-    cin >> userCol;
-  }
+
+  cout << "\nPlayer " << player << " turn (" << playerSymbol << "): \n";
+  userRow = checkUserInput(player, playerSymbol, 1);
+  userCol = checkUserInput(player, playerSymbol, 2);
   
   if (userRow >= 0 && userCol >= 0 && userRow < ROWS && userCol < COLS){
     if(gameBoard[userRow][userCol] == '_') {
@@ -120,35 +135,35 @@ void turn(char gameBoard[][COLS], int player){
 };
 
 void init_vier_gewinnt() {
-	char gameBoard[ROWS][COLS];
+  char gameBoard[ROWS][COLS];
 
-	cout << "\n\n" << "Welcome to 'Connect Four'!" << "\n\n" << "The Game-Board: " << "\n\n";
+  cout << "\n\n" << "Welcome to 'Connect Four'!" << "\n\n" << "The Game-Board: " << "\n\n";
 
-	for (x = 0; x < ROWS; x++){
-		for (y = 0; y < COLS; y++){
-	    	gameBoard [x][y] = '_';
-		}
-		}
+  for (x = 0; x < ROWS; x++){
+    for (y = 0; y < COLS; y++){
+        gameBoard [x][y] = '_';
+    }
+    }
 
-	cout <<"      C o l u m n s\n";
-	cout <<"      0 1 2 3 4 5 6\n";
-	cout <<" R 0  _ _ _ _ _ _ _\n";
-	cout <<" o 1  _ _ _ _ _ _ _\n";
-	cout <<" w 2  _ _ _ _ _ _ _\n";
-	cout <<" s 3  _ _ _ _ _ _ _\n";
-	cout <<"   4  _ _ _ _ _ _ _\n";
-	cout <<"   5  _ _ _ _ _ _ _\n\n";
+  cout <<"      C o l u m n s\n";
+  cout <<"      0 1 2 3 4 5 6\n";
+  cout <<" R 0  _ _ _ _ _ _ _\n";
+  cout <<" o 1  _ _ _ _ _ _ _\n";
+  cout <<" w 2  _ _ _ _ _ _ _\n";
+  cout <<" s 3  _ _ _ _ _ _ _\n";
+  cout <<"   4  _ _ _ _ _ _ _\n";
+  cout <<"   5  _ _ _ _ _ _ _\n\n";
 
-	turn(gameBoard, 1);
-	  
-	while(gameRunning == true){
-		if (player_1){
-	    	turn(gameBoard, 1);
-	   	}
-	    if (!player_1){
-	    	turn(gameBoard, 2);
-	    }
-  	}
+  turn(gameBoard, 1);
+    
+  while(gameRunning == true){
+    if (player_1){
+        turn(gameBoard, 1);
+      }
+      if (!player_1){
+        turn(gameBoard, 2);
+      }
+    }
 }
 
 #endif 
