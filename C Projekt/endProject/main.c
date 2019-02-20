@@ -24,7 +24,6 @@ void runArcade() {
             init_vier_gewinnt();
         }
         else {
-            cout << "\n !!! Invalide Eingabe !!! \n";
             return runArcade();
         }
     }         
@@ -32,11 +31,9 @@ void runArcade() {
         endGame = true;
         cout << "\n\342\230\272 GOOD BYE \342\230\272\n\n";
     } else {
-        cout << "\n !!! Invalide Eingabe !!! \n";
         return runArcade();
     }
   } else {
-    cout << "\n !!! Invalide Eingabe !!! \n";
     return runArcade();
   }
 

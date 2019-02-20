@@ -170,6 +170,9 @@ void turn(char gameBoard[][COLS], int player){
 
 void init_vier_gewinnt() {
   char gameBoard[ROWS][COLS];
+  player_1 = false;
+  gameRunning = true;
+
 
   cout << "\n\n" << "Wilkommen zu 'Vier Gewinnt'!" << "\n\n" << "Das Spielbrett: " << "\n\n";
 
