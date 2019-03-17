@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <fstream>
 #include <string.h>
+#include <stdlib.h> 
 #include <iostream>
 #include <stdbool.h>
+#include <random>
 using namespace std;
 
 #ifndef hangman
@@ -129,30 +131,23 @@ void append(char* s, char c) {
     s[len+1] = '\0';
 }
 
-void readFile() {
-    ifstream file;
-    file.open ("woerter.txt");
-    if (!file.is_open()) return;
-
-    char *strs[10];
-    char word[100];
-    while (file >> word){
-        strs[0] = word;
-        cout<< word << '\n';
-    }
-        cout<< *strs << '\n';
-}
-
 int init_hangman (void){
-  readFile();
-  char wordToGuess[] = "Beispiel";
+  char* words[] = { "Beispiel", "Analogie", "Diktator", "Eiscreme", "Erdbeere"};
+  int length = 4;
+  
+  // Random Function
+  std::random_device dev;
+  std::mt19937 rng(dev());
+  std::uniform_int_distribution<std::mt19937::result_type> dist6(0, length);
+
+  char* wordToGuess = words[dist6(rng)];
   char alreadyGuessed[sizeof(wordToGuess)] = "\0";
   char gameRunning = true;
   char inputCharacter;
   string input;
   int amountWrongLetters = 0;
 
-  for (int i = 1; i < sizeof(wordToGuess); i++){
+  for (int i = 1; i < sizeof(wordToGuess) +1 ; i++){
     append(alreadyGuessed, '_');
   }
 
@@ -166,7 +161,7 @@ int init_hangman (void){
         cin >> input;
         inputCharacter = input[0];
 
-        cout << input.length();
+        //cout << input.length();
         
         // User Input Errors handeln
         while(!isalpha(inputCharacter) || input.length() > 1){// nur genau ein Buchstabe ist der korrekte Input
