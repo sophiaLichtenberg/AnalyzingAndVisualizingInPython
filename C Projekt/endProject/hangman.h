@@ -200,11 +200,12 @@ int init_hangman (void){
   int amountWrongLetters = 0; // number of wrongly guessed letters
   string alreadyGuessed=""; // saves how many letters are already guessed or still have to be guessed
   string wordToGuess = getWordToGuess(); // word which should be guessed
-
+  cout << wordToGuess;
   
   // fill container with "_" for each letter which has to be guessed  
   for(int i=0; i< wordToGuess.length(); i++){
     alreadyGuessed = alreadyGuessed + "_";
+  }
   
 
   cout << "\n\n" << "Willkommen bei Hangman!" << "\n\n" << "Sie müssen ein Wort erraten. Geben Sie einen Buchstaben dafür ein und drücken Sie enter. Wenn der Buchstabe falsch ist, wird Hangman wachsen.\n\n";
@@ -239,7 +240,7 @@ int init_hangman (void){
     // check if user has won or lost
   gameRunning = checkWinLost(amountWrongLetters, alreadyGuessed);
     }
-  }
+  
 }
 
 
